@@ -5,7 +5,7 @@
 
 ## How to use
  
-No time to write this yet but it's pretty straightforward to use. If you run into any problems or have some questions or suggestions then find me on the dungeoncrawler.org Discord server or Twitter (@zooperdan).
+No time to write this yet but it's pretty straightforward to use. If you run into any problems or have some questions or suggestions then find me on the dungeoncrawler.org [Discord server](https://discord.gg/XerEseQ) or Twitter ([@zooperdan](https://twitter.com/zooperdan)).
 
 
 ## Installation
