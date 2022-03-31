@@ -20,7 +20,7 @@ MonoBehaviour:
     width: 238
     height: 190
   atlases:
-  - {fileID: 11400000, guid: d85692765cc6d3d48884fd98ced62b1b, type: 2}
+  - {fileID: 11400000, guid: dde56e478a0c10c4cb9951ab798faa93, type: 2}
   fov: 35
   offsetY: 0.6
   offsetZ: 2
@@ -40,3 +40,4 @@ MonoBehaviour:
   linearFogStart: 0
   linearFogEnd: 6
   ambientColor: {r: 1, g: 1, b: 1, a: 1}
+  previewBackgroundColor: {r: 0, g: 0, b: 0, a: 1}

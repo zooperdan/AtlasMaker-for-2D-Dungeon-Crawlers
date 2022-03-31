@@ -167,7 +167,7 @@ namespace zooperdan.AtlasMaker
         AtlasMakerSettings settings;
         GameObject atlasMakerCamera;
 
-        private const string VERSION_NUMBER = "0.5";
+        private const string VERSION_NUMBER = "0.6";
 
         private List<Vector2Int> _squaresToGenerateList = new List<Vector2Int>();
         private DataContainer _dataContainer = new DataContainer();
@@ -179,12 +179,14 @@ namespace zooperdan.AtlasMaker
         private bool _showCameraSettings = false;
         private bool _showRenderSettings = false;
         private bool _showLightSettings = false;
+        private bool _showMiscSettings = false;
         private Texture2D atlasTexture;
         private static Texture2D _backgroundTex;
 
         private Camera _viewportCamera;
         private RenderTexture _renderTexture;
         private GameObject _wallTemplate;
+        private static Material _previewMaterial;
 
         [MenuItem("zooperdan/AtlasMaker %g")]
         private static void Init()
@@ -200,10 +202,6 @@ namespace zooperdan.AtlasMaker
 
         void OnGUI()
         {
-            if (!_backgroundTex)
-            {
-                _backgroundTex = MakeTex(1, 1, Color.black);
-            }
 
             if (!settings)
             {
@@ -213,6 +211,16 @@ namespace zooperdan.AtlasMaker
             if (!atlasMakerCamera)
             {
                 atlasMakerCamera = (GameObject)Resources.Load("AtlasMakerCamera") as GameObject;
+            }
+
+            if (!_backgroundTex)
+            {
+                _backgroundTex = MakeTex(1, 1, settings.previewBackgroundColor);
+            }
+
+            if (!_previewMaterial)
+            {
+                _previewMaterial = new Material(Shader.Find("Unlit/Transparent"));
             }
 
             float toolbarWidth = 300;
@@ -253,7 +261,8 @@ namespace zooperdan.AtlasMaker
 
             GUILayout.EndArea();
 
-            float previewWidth = Screen.width - (toolbarWidth / 2);
+            float previewWidth = Screen.width - toolbarWidth/2;
+
             rect = new Rect(toolbarWidth/2, 0, previewWidth, Screen.height);
 
             GUILayout.BeginArea(rect);
@@ -262,22 +271,7 @@ namespace zooperdan.AtlasMaker
 
             if (atlasTexture)
             {
-
-                if ((float)atlasTexture.width / (float)atlasTexture.height > 1)
-                {
-                    float f = ((previewWidth / 2) / (float)atlasTexture.width);
-                    float w = atlasTexture.width * f;
-                    float h = atlasTexture.height * f;
-                    EditorGUI.DrawPreviewTexture(new Rect(toolbarWidth / 2, 0, w, h), atlasTexture);
-                }
-                else
-                {
-                    float f = (Screen.height / (float)atlasTexture.height);
-                    float w = atlasTexture.width * f;
-                    float h = atlasTexture.height * f;
-                    EditorGUI.DrawPreviewTexture(new Rect(toolbarWidth / 2, 0, w, h-30), atlasTexture);
-                }
-
+                EditorGUI.DrawPreviewTexture(new Rect((toolbarWidth / 2) + 10, 10, previewWidth - ((toolbarWidth / 2) + 10), Screen.height-40), atlasTexture, _previewMaterial, ScaleMode.ScaleToFit);
             }
 
             GUILayout.EndArea();
@@ -539,6 +533,26 @@ namespace zooperdan.AtlasMaker
 
             }
 
+            _showMiscSettings = EditorGUILayout.Foldout(_showMiscSettings, "Other settings");
+
+            if (_showMiscSettings)
+            {
+
+                EditorGUI.BeginChangeCheck();
+
+                GUILayout.BeginHorizontal();
+                EditorGUILayout.Space(20);
+                GUILayout.Label("Preview background color");
+                GUILayout.FlexibleSpace();
+                settings.previewBackgroundColor = EditorGUILayout.ColorField(settings.previewBackgroundColor);
+                GUILayout.EndHorizontal();
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    _backgroundTex = MakeTex(1, 1, settings.previewBackgroundColor);
+                }
+
+            }
 
             EditorGUILayout.Space();
             EditorGUILayout.Space();
@@ -704,6 +718,8 @@ namespace zooperdan.AtlasMaker
                     continue;
                 }
 
+                // while tiles to render?
+
                 if (atlas.layers[layerIndex].renderBothSides)
                 {
 
@@ -724,14 +740,13 @@ namespace zooperdan.AtlasMaker
                     {
                         for (int a = 0; a <= settings.dungeonDepth; a++)
                         {
-                            if (!(a == 0 && b == 0))
-                            {
-                                _squaresToGenerateList.Add(new Vector2Int(0 - b, 0 - a));
-                            }
+                            _squaresToGenerateList.Add(new Vector2Int(0 - b, 0 - a));
                         }
                     }
 
                 }
+
+                // create new jsonlayer
 
                 JSONLayer jsonLayer = new JSONLayer();
 
@@ -757,7 +772,10 @@ namespace zooperdan.AtlasMaker
                                 if (atlas.layers[layerIndex].renderBothSides)
                                 {
                                     // front
-                                    wallScript.ShowFrontWall();
+                                    if (wallScript != null)
+                                    {
+                                        wallScript.ShowFrontWall();
+                                    }
                                     gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "front");
                                     if (gri != null)
                                     {
@@ -769,7 +787,10 @@ namespace zooperdan.AtlasMaker
                                     if (squareIndex <= settings.dungeonDepth)
                                     {
                                         // front
-                                        wallScript.ShowFrontWall();
+                                        if (wallScript != null)
+                                        {
+                                            wallScript.ShowFrontWall();
+                                        }
                                         gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "front");
                                         if (gri != null)
                                         {
@@ -782,7 +803,10 @@ namespace zooperdan.AtlasMaker
                                 // side
                                 if (vec.x >= 0)
                                 {
-                                    wallScript.ShowSideWall();
+                                    if (wallScript != null)
+                                    {
+                                        wallScript.ShowSideWall();
+                                    }
                                     gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "side");
                                     if (gri != null)
                                     {
@@ -797,6 +821,32 @@ namespace zooperdan.AtlasMaker
                                 if (vec.y < 0)
                                 {
                                     gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "object");
+                                    if (gri != null)
+                                    {
+                                        jsonLayer.tiles.Add(gri.tile);
+                                        generatedImages.Add(gri.image);
+                                    }
+                                }
+                            }
+                            break;
+                        case AtlasLayerType.GROUND:
+                            {
+                                if (vec.y <= 0)
+                                {
+                                    gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "ground");
+                                    if (gri != null)
+                                    {
+                                        jsonLayer.tiles.Add(gri.tile);
+                                        generatedImages.Add(gri.image);
+                                    }
+                                }
+                            }
+                            break;
+                        case AtlasLayerType.CEILING:
+                            {
+                                if (vec.y <= 0)
+                                {
+                                    gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "ceiling");
                                     if (gri != null)
                                     {
                                         jsonLayer.tiles.Add(gri.tile);
