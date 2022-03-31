@@ -2,7 +2,7 @@
  A package for Unity which will allow you to render images atlases to be used in developing first person grid dungeon crawlers.
  
  There is only one required package and it can be downloaded from the built-in package manager.
-- Package name: Editor Coroutines (com.unity.editorcoroutines)
+> Package: Editor Coroutines (com.unity.editorcoroutines)
 
 No time to write a how-to (yet) but it's pretty straightforward to use. If you run into any problems or have some questions or suggestions then find me on the dungeoncrawler.org Discord server or Twitter (@zooperdan).
 
