@@ -15,6 +15,20 @@ Download [AtlasMaker-for-2D-Dungeon-Crawlers.unitypackage](Package/AtlasMaker-fo
 There is only one required package and it can be downloaded from the built-in package manager.
 > Package: Editor Coroutines (com.unity.editorcoroutines)
 
+## TO-DO
+
+>	- Support for rendering two different types of ground.
+>		- Whole ground which can be drawn in-game as a background and flipped to simulate movement.
+>		- Separate ground tiles
+>	- Support for rendering two different types of ceilings.
+>		- Whole ceiling which can be drawn in-game as a background and flipped to simulate movement.
+>		- Separate ceiling tiles
+>	- Implement two types of atlas packing.
+>		- Optimized (This is the current one that is already implemented).
+>		- Layed out. This method will arrange the atlas in a way so the side walls are connected to each other like they would be when rendered in a dungeon. This makes it easy to use this as a template for manual pixelling on top.
+>	- Output the atlas data to other formats in addition to JSON (LUA, XML, CSV, BINARY etc.)
+>	- Color quantization to indexed palettes presets.
+>	- Option to write the image output to separate image files instead of a single atlas image.
 
 ## Change log
 
