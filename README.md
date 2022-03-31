@@ -17,12 +17,6 @@ There is only one required package and it can be downloaded from the built-in pa
 
 ## TO-DO
 
->	- Support for rendering two different types of ground.
->		- Whole ground which can be drawn in-game as a background and flipped to simulate movement.
->		- Separate ground tiles
->	- Support for rendering two different types of ceilings.
->		- Whole ceiling which can be drawn in-game as a background and flipped to simulate movement.
->		- Separate ceiling tiles
 >	- Implement two types of atlas packing.
 >		- Optimized (This is the current one that is already implemented).
 >		- Layed out. This method will arrange the atlas in a way so the side walls are connected to each other like they would be when rendered in a dungeon. This makes it easy to use this as a template for manual pixelling on top.
@@ -31,6 +25,12 @@ There is only one required package and it can be downloaded from the built-in pa
 >	- Option to write the image output to separate image files instead of a single atlas image.
 
 ## Change log
+
+Version 0.6
+
+>	- Added rendering of ground and ceiling tiles.
+>	- Fixed so that preview scales stretched to fit while keeping aspect ratio.
+>	- Added a property in Other settings which allows you to change background color of the preview window.
 
 Version 0.5
 
