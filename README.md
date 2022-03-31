@@ -6,7 +6,7 @@
 
 No time to write a how-to (yet) but it's pretty straightforward to use. If you run into any problems or have some questions or suggestions then find me on the dungeoncrawler.org Discord server or Twitter (@zooperdan).
 
-![This is an image]screenshots/screenshot-01.png)
+![This is an image](Media/screenshot-01.png)
 
 ## Change log
 
