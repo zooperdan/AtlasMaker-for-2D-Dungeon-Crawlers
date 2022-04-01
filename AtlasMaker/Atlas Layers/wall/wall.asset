@@ -16,4 +16,4 @@ MonoBehaviour:
   model: {fileID: 6431865897727680575, guid: 9f2e3f58c198c3a4a98a750e1695ee1d, type: 3}
   id: wall
   type: 0
-  renderBothSides: 0
+  renderMode: 0

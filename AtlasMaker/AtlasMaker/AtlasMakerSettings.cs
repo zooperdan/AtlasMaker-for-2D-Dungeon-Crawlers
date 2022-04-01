@@ -61,6 +61,7 @@ namespace zooperdan.AtlasMaker
         // other settings
 
         public Color previewBackgroundColor = Color.black;
+        public bool previewFiltering = false;
     }
 
 }

@@ -16,4 +16,4 @@ MonoBehaviour:
   model: {fileID: 6431865897727680575, guid: 0a5c46d2096aae047aa51e6454d721d6, type: 3}
   id: ceiling
   type: 2
-  renderBothSides: 1
+  renderMode: 2

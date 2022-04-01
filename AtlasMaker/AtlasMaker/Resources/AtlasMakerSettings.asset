@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7524e9d4e9c309541bb0de176a181aa2, type: 3}
   m_Name: AtlasMakerSettings
   m_EditorClassIdentifier: 
-  filterMode: 1
+  filterMode: 0
   outputPath: e:\
   dungeonDepth: 4
   dungeonWidth: 4
@@ -41,3 +41,4 @@ MonoBehaviour:
   linearFogEnd: 6
   ambientColor: {r: 1, g: 1, b: 1, a: 1}
   previewBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  previewFiltering: 0
