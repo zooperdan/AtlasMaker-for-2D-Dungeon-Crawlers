@@ -25,7 +25,7 @@ MonoBehaviour:
   offsetY: 0.6
   offsetZ: 2
   lensShiftY: -0.2
-  lightMode: 0
+  lightMode: 2
   pointLightPosition: {x: 0, y: 0, z: 0}
   pointLightRange: 3
   pointLightIntensity: 2.75
@@ -33,10 +33,10 @@ MonoBehaviour:
   directionalLightRotation: {x: 45, y: -15, z: 0}
   directionalLightIntensity: 1
   directionalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  fog: 0
+  fog: 1
   fogColor: {r: 0, g: 0, b: 0, a: 1}
   fogMode: 3
-  fogDensity: 0.3
+  fogDensity: 0.4
   linearFogStart: 0
   linearFogEnd: 6
   ambientColor: {r: 1, g: 1, b: 1, a: 1}
