@@ -5,7 +5,7 @@
 
 ## How to use
 
-Read the [Documentation](/Docs/documentation.md)
+Read the [Documentation](/Docs/documentation.md) for a quick break-down of the tool.
 
 If you run into any problems or have some questions or suggestions then find me on the dungeoncrawler.org [Discord server](https://discord.gg/XerEseQ) or Twitter ([@zooperdan](https://twitter.com/zooperdan)).
 
