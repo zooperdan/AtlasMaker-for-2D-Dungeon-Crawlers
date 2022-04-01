@@ -30,7 +30,7 @@ There is only one required package and it can be downloaded from the built-in pa
 Version 0.7
 
 >	- Added a "Preview filtering" property in other settings rollout which toggles between interpolated and nearest neighbour scaling for the preview window.
->	- Added a "Render Mode" property for atlas layers which controls the method which the layers are rendered.
+>	- Added a "Render Mode" property for atlas layers (and removed the "Both sides" property) which controls the method which the layers are rendered.
 >		- LEFT: The grid tiles in the middle column and left of it are rendered.
 >		- MIDDLE: Only the grid tiles in the middle column is rendered
 >		- ALL: The grid tiles on the left, middle and right side are rendered. 
