@@ -7,13 +7,18 @@
  
 No time to write this yet but it's pretty straightforward to use. If you run into any problems or have some questions or suggestions then find me on the dungeoncrawler.org [Discord server](https://discord.gg/XerEseQ) or Twitter ([@zooperdan](https://twitter.com/zooperdan)).
 
-
 ## Installation
 
 Download [AtlasMaker-for-2D-Dungeon-Crawlers.unitypackage](Package/AtlasMaker-for-2D-Dungeon-Crawlers.unitypackage) and import it into a Unity project.
 
 There is only one required package and it can be downloaded from the built-in package manager.
 > Package: Editor Coroutines (com.unity.editorcoroutines)
+
+## Example project
+
+You might want to check out a small [Example project](/Example/LÖVE/) for the [LÖVE](https://love2d.org/) framework which demonstrates atlas loading and rendering of a dungeon.
+
+Please note that the example is unoptimized and the dungeon rendering could likely be implemented in better ways but it should be enough to get you started.
 
 ## TO-DO
 
