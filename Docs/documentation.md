@@ -16,6 +16,7 @@ AtlasMaker can generate multiple atlases at once, and a single atlas can have mu
 
 ## AtlasMaker
 
+General
 | Property  | Description |
 | :------------- |  :------------- |
 | Dungeon depth  | How many grid cells should be visible from eye point of view  |
@@ -23,6 +24,41 @@ AtlasMaker can generate multiple atlases at once, and a single atlas can have mu
 | Filter mode  | Choose between sharp or interpolated rendering output.  |
 | Screen size  | The dimension of the area/viewport in the game where the dungeon will be rendered. |
 | Output folder  | The atlas files will be saved here. |
+
+Camera settings
+| Property  | Description |
+| :------------- |  :------------- |
+| Field of view  | Sets the camera field of view  |
+| Y offset  | Offset camera position in Y axis  |
+| Z offset  | Offset camera position in Z axis  |
+| Lens shift Y  | This one is a little bit difficult to explain. A negative value will tilt camera down while still keeping all vertical edges 100% vertical. It prevents perspective distortion when tilting a 3D camera down. This emulates old classics with manually drawn graphics. Quite often they show more of the floor (tilting head down) but all vertical edges are still vertically straight. |
+
+Light settings
+| Property | Description |
+| :------------- |  :------------- |
+| Light mode | Set the light mode to be used (None, Point light or Directional light).  |
+
+Light settings (Point light)
+| Property  | Description |
+| :------------- |  :------------- |
+| Offset | The position of the light relative to the camera position.  |
+| Color | The color of the light.  |
+| Range | The range of the light.  |
+| Intensity  | Light intensity multiplier.  |
+
+Light settings (Directional light)
+| Property  | Description |
+| :------------- |  :------------- |
+| Rotation | The rotation of the light. Use this to control where the light (sun) comes from. |
+| Intensity  | Light intensity multiplier.  |
+| Color  | The color of the light.  |
+
+Render settings
+| Property  | Description |
+| :------------- |  :------------- |
+| Rotation | The rotation of the light. Use this to control where the light (sun) comes from. |
+| Intensity  | Light intensity multiplier.  |
+| Color  | The color of the light.  |
 
 ## Atlas
 
