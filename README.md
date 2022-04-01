@@ -23,6 +23,7 @@ There is only one required package and it can be downloaded from the built-in pa
 >	- Output the atlas data to other formats in addition to JSON (LUA, XML, CSV, BINARY etc.)
 >	- Color quantization to indexed palettes presets.
 >	- Option to write the image output to separate image files instead of a single atlas image.
+>	- Documentation on how to use this tool.
 
 ## Change log
 
