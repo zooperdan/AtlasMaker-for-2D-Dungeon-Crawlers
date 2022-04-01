@@ -24,6 +24,7 @@ General
 | Filter mode  | Choose between sharp or interpolated rendering output.  |
 | Screen size  | The dimension of the area/viewport in the game where the dungeon will be rendered. |
 | Output folder  | The atlas files will be saved here. |
+| Atlases | A list of atlases that will be generated. |
 
 Camera settings
 | Property  | Description |
@@ -56,9 +57,19 @@ Light settings (Directional light)
 Render settings
 | Property  | Description |
 | :------------- |  :------------- |
-| Rotation | The rotation of the light. Use this to control where the light (sun) comes from. |
-| Intensity  | Light intensity multiplier.  |
-| Color  | The color of the light.  |
+| Fog | Turns fog on/off. |
+| Fog color  | Sets the color of the fog.  |
+| Fog mode  | Sets the fog type.  |
+| Fog density  | Sets the fog density.  |
+| Linear fog start  | When fog mode is set to Linear this controls when the fog starts.  |
+| Linear fog end  | When fog mode is set to Linear this controls when the fog ends.  |
+| Ambient  | Sets the ambient color. |
+
+Other settings
+| Property  | Description |
+| :------------- |  :------------- |
+| Preview background color | Sets the background color for the atlas preview window. |
+| Preview filtering  | Toggles the interpolation/smoothing of the preview output.  |
 
 ## Atlas
 
