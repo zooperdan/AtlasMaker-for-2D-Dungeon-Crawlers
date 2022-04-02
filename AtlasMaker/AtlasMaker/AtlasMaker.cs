@@ -164,10 +164,10 @@ namespace zooperdan.AtlasMaker
     {
         public static AtlasMaker Instance { get; private set; }
 
-        AtlasMakerSettings settings;
+        private AtlasMakerSettings _settings;
         GameObject atlasMakerCamera;
 
-        private const string VERSION_NUMBER = "0.7";
+        private const string VERSION_NUMBER = "0.8";
 
         private List<Vector2Int> _squaresToGenerateList = new List<Vector2Int>();
         private DataContainer _dataContainer = new DataContainer();
@@ -203,11 +203,6 @@ namespace zooperdan.AtlasMaker
         void OnGUI()
         {
 
-            if (!settings)
-            {
-                settings = (AtlasMakerSettings)Resources.Load("AtlasMakerSettings") as AtlasMakerSettings;
-            }
-
             if (!atlasMakerCamera)
             {
                 atlasMakerCamera = (GameObject)Resources.Load("AtlasMakerCamera") as GameObject;
@@ -215,7 +210,13 @@ namespace zooperdan.AtlasMaker
 
             if (!_backgroundTex)
             {
-                _backgroundTex = MakeTex(1, 1, settings.previewBackgroundColor);
+                if (_settings)
+                {
+                    _backgroundTex = MakeTex(1, 1, _settings.previewBackgroundColor);
+                } else
+                {
+                    _backgroundTex = MakeTex(1, 1, Color.black);
+                }
             }
 
             if (!_previewMaterial)
@@ -269,9 +270,9 @@ namespace zooperdan.AtlasMaker
 
             GUI.DrawTexture(rect, _backgroundTex, ScaleMode.StretchToFill);
 
-            if (atlasTexture)
+            if (atlasTexture && _settings)
             {
-                atlasTexture.filterMode = settings.previewFiltering ? FilterMode.Bilinear : FilterMode.Point;
+                atlasTexture.filterMode = _settings.previewFiltering ? FilterMode.Bilinear : FilterMode.Point;
                 EditorGUI.DrawPreviewTexture(new Rect((toolbarWidth / 2) + 10, 10, previewWidth - ((toolbarWidth / 2) + 10), Screen.height-40), atlasTexture, _previewMaterial, ScaleMode.ScaleToFit);
             }
 
@@ -338,235 +339,262 @@ namespace zooperdan.AtlasMaker
             }
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Dungeon depth", GUILayout.Width(100));
-            settings.dungeonDepth = EditorGUILayout.IntField(settings.dungeonDepth);
+            GUILayout.Label("Settings file", GUILayout.Width(100));
+            _settings = (AtlasMakerSettings)EditorGUILayout.ObjectField(_settings, typeof(AtlasMakerSettings), true);
             GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Dungeon width", GUILayout.Width(100));
-            settings.dungeonWidth = EditorGUILayout.IntField(settings.dungeonWidth);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Filter Mode", GUILayout.Width(100));
-            settings.filterMode = (FilterMode)EditorGUILayout.EnumPopup(settings.filterMode);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Screen size", GUILayout.Width(100));
-            settings.screenSize.width = EditorGUILayout.IntField(settings.screenSize.width);
-            settings.screenSize.height = EditorGUILayout.IntField(settings.screenSize.height);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Output folder", GUILayout.Width(100));
-            settings.outputPath = EditorGUILayout.TextField(settings.outputPath);
-            GUILayout.EndHorizontal();
-
+            EditorGUILayout.Space();
             EditorGUILayout.Space();
 
-            _showCameraSettings = EditorGUILayout.Foldout(_showCameraSettings, "Camera settings");
-
-            if (_showCameraSettings)
-            {
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Field of view");
-                GUILayout.FlexibleSpace();
-                settings.fov = EditorGUILayout.FloatField(settings.fov);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Y offset");
-                GUILayout.FlexibleSpace();
-                settings.offsetY = EditorGUILayout.FloatField(settings.offsetY);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Z offset");
-                GUILayout.FlexibleSpace();
-                settings.offsetZ = EditorGUILayout.FloatField(settings.offsetZ);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Lens shift Y");
-                GUILayout.FlexibleSpace();
-                settings.lensShiftY = EditorGUILayout.FloatField(settings.lensShiftY);
-                GUILayout.EndHorizontal();
-
-            }
-
-            _showLightSettings = EditorGUILayout.Foldout(_showLightSettings, "Light settings");
-
-            if (_showLightSettings)
+            if (_settings)
             {
 
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Light Mode", GUILayout.Width(100));
-                GUILayout.FlexibleSpace();
-                settings.lightMode = (LightMode)EditorGUILayout.EnumPopup(settings.lightMode);
+                GUILayout.Label("Dungeon depth", GUILayout.Width(100));
+                _settings.dungeonDepth = EditorGUILayout.IntField(_settings.dungeonDepth);
                 GUILayout.EndHorizontal();
 
-                switch (settings.lightMode)
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Dungeon width", GUILayout.Width(100));
+                _settings.dungeonWidth = EditorGUILayout.IntField(_settings.dungeonWidth);
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Filter Mode", GUILayout.Width(100));
+                _settings.filterMode = (FilterMode)EditorGUILayout.EnumPopup(_settings.filterMode);
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Screen size", GUILayout.Width(100));
+                _settings.screenSize.width = EditorGUILayout.IntField(_settings.screenSize.width);
+                _settings.screenSize.height = EditorGUILayout.IntField(_settings.screenSize.height);
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Output folder", GUILayout.Width(100));
+                _settings.outputPath = EditorGUILayout.TextField(_settings.outputPath);
+                GUILayout.EndHorizontal();
+
+                EditorGUILayout.Space();
+
+                _showCameraSettings = EditorGUILayout.Foldout(_showCameraSettings, "Camera settings");
+
+                if (_showCameraSettings)
                 {
-                    case LightMode.Point:
-                        {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.BeginVertical(GUILayout.Width(20));
+                    EditorGUILayout.Space();
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical();
 
-                            GUILayout.BeginHorizontal();
-                            EditorGUILayout.Space(20);
-                            settings.pointLightPosition = EditorGUILayout.Vector3Field("Offset", settings.pointLightPosition);
-                            GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Field of view");
+                    _settings.fov = EditorGUILayout.FloatField(_settings.fov);
+                    GUILayout.EndHorizontal();
 
-                            GUILayout.BeginHorizontal();
-                            EditorGUILayout.Space(20);
-                            GUILayout.Label("Color");
-                            GUILayout.FlexibleSpace();
-                            settings.pointLightColor = EditorGUILayout.ColorField(settings.pointLightColor);
-                            GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Y offset");
+                    _settings.offsetY = EditorGUILayout.FloatField(_settings.offsetY);
+                    GUILayout.EndHorizontal();
 
-                            GUILayout.BeginHorizontal();
-                            EditorGUILayout.Space(20);
-                            GUILayout.Label("Range");
-                            GUILayout.FlexibleSpace();
-                            settings.pointLightRange = EditorGUILayout.FloatField(settings.pointLightRange);
-                            GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Z offset");
+                    _settings.offsetZ = EditorGUILayout.FloatField(_settings.offsetZ);
+                    GUILayout.EndHorizontal();
 
-                            GUILayout.BeginHorizontal();
-                            EditorGUILayout.Space(20);
-                            GUILayout.Label("Intensity");
-                            GUILayout.FlexibleSpace();
-                            settings.pointLightIntensity = EditorGUILayout.FloatField(settings.pointLightIntensity);
-                            GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Lens shift Y");
+                    _settings.lensShiftY = EditorGUILayout.FloatField(_settings.lensShiftY);
+                    GUILayout.EndHorizontal();
 
-
-                        } break;
-
-                    case LightMode.Directional:
-                        {
-
-                            GUILayout.BeginHorizontal();
-                            EditorGUILayout.Space(20);
-                            settings.directionalLightRotation = EditorGUILayout.Vector3Field("Rotation", settings.directionalLightRotation);
-                            GUILayout.EndHorizontal();
-
-                            GUILayout.BeginHorizontal();
-                            EditorGUILayout.Space(20);
-                            GUILayout.Label("Intensity");
-                            GUILayout.FlexibleSpace();
-                            settings.directionalLightIntensity = EditorGUILayout.FloatField(settings.directionalLightIntensity);
-                            GUILayout.EndHorizontal();
-
-                            GUILayout.BeginHorizontal();
-                            EditorGUILayout.Space(20);
-                            GUILayout.Label("Color");
-                            GUILayout.FlexibleSpace();
-                            settings.directionalLightColor = EditorGUILayout.ColorField(settings.directionalLightColor);
-                            GUILayout.EndHorizontal();
-
-                        }
-                        break;
-
-                    default:
-                        {
-
-                        }
-                        break;
+                    GUILayout.EndVertical();
+                    GUILayout.EndHorizontal();
                 }
 
-            }
+                _showLightSettings = EditorGUILayout.Foldout(_showLightSettings, "Light settings");
 
-            _showRenderSettings = EditorGUILayout.Foldout(_showRenderSettings, "Render settings");
-
-            if (_showRenderSettings)
-            {
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Fog");
-                GUILayout.FlexibleSpace();
-                settings.fog = EditorGUILayout.Toggle(settings.fog);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Fog color");
-                GUILayout.FlexibleSpace();
-                settings.fogColor = EditorGUILayout.ColorField(settings.fogColor);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Fog mode");
-                GUILayout.FlexibleSpace();
-                settings.fogMode = (FogMode)EditorGUILayout.EnumPopup(settings.fogMode);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Fog density");
-                GUILayout.FlexibleSpace();
-                settings.fogDensity = EditorGUILayout.FloatField(settings.fogDensity);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Linear fog start");
-                GUILayout.FlexibleSpace();
-                settings.linearFogStart = EditorGUILayout.FloatField(settings.linearFogStart);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Linear fog end");
-                GUILayout.FlexibleSpace();
-                settings.linearFogEnd = EditorGUILayout.FloatField(settings.linearFogEnd);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Ambient color");
-                GUILayout.FlexibleSpace();
-                settings.ambientColor = EditorGUILayout.ColorField(settings.ambientColor);
-                GUILayout.EndHorizontal();
-
-            }
-
-            _showMiscSettings = EditorGUILayout.Foldout(_showMiscSettings, "Other settings");
-
-            if (_showMiscSettings)
-            {
-
-                EditorGUI.BeginChangeCheck();
-
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Preview background color");
-                GUILayout.FlexibleSpace();
-                settings.previewBackgroundColor = EditorGUILayout.ColorField(settings.previewBackgroundColor);
-                GUILayout.EndHorizontal();
-
-                if (EditorGUI.EndChangeCheck())
+                if (_showLightSettings)
                 {
-                    _backgroundTex = MakeTex(1, 1, settings.previewBackgroundColor);
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.BeginVertical(GUILayout.Width(20));
+                    EditorGUILayout.Space();
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical();
+
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Light Mode");
+                    _settings.lightMode = (LightMode)EditorGUILayout.EnumPopup(_settings.lightMode);
+                    GUILayout.EndHorizontal();
+
+                    switch (_settings.lightMode)
+                    {
+                        case LightMode.Point:
+                            {
+
+                                GUILayout.BeginHorizontal();
+                                
+                                GUILayout.Label("Offset");
+                                _settings.pointLightPosition = EditorGUILayout.Vector3Field("", _settings.pointLightPosition);
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                
+                                GUILayout.Label("Color");
+                                _settings.pointLightColor = EditorGUILayout.ColorField(_settings.pointLightColor);
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                
+                                GUILayout.Label("Range");
+                                _settings.pointLightRange = EditorGUILayout.FloatField(_settings.pointLightRange);
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                
+                                GUILayout.Label("Intensity");
+                                _settings.pointLightIntensity = EditorGUILayout.FloatField(_settings.pointLightIntensity);
+                                GUILayout.EndHorizontal();
+
+
+                            } break;
+
+                        case LightMode.Directional:
+                            {
+
+                                GUILayout.BeginHorizontal();
+                                
+                                GUILayout.Label("Rotation");
+                                _settings.directionalLightRotation = EditorGUILayout.Vector3Field("", _settings.directionalLightRotation);
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                
+                                GUILayout.Label("Intensity");
+                                _settings.directionalLightIntensity = EditorGUILayout.FloatField(_settings.directionalLightIntensity);
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                
+                                GUILayout.Label("Color");
+                                _settings.directionalLightColor = EditorGUILayout.ColorField(_settings.directionalLightColor);
+                                GUILayout.EndHorizontal();
+
+                            }
+                            break;
+
+                        default:
+                            {
+
+                            }
+                            break;
+                    }
+
+                    GUILayout.EndVertical();
+                    GUILayout.EndHorizontal();
                 }
 
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.Space(20);
-                GUILayout.Label("Preview filtering");
-                GUILayout.FlexibleSpace();
-                settings.previewFiltering = EditorGUILayout.Toggle(settings.previewFiltering);
-                GUILayout.EndHorizontal();
+                _showRenderSettings = EditorGUILayout.Foldout(_showRenderSettings, "Render settings");
+
+                if (_showRenderSettings)
+                {
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.BeginVertical(GUILayout.Width(20));
+                    EditorGUILayout.Space();
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Fog");
+                    _settings.fog = EditorGUILayout.Toggle(_settings.fog);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Fog color");
+                    _settings.fogColor = EditorGUILayout.ColorField(_settings.fogColor);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Fog mode");
+                    _settings.fogMode = (FogMode)EditorGUILayout.EnumPopup(_settings.fogMode);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Fog density");
+                    _settings.fogDensity = EditorGUILayout.FloatField(_settings.fogDensity);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Linear fog start");
+                    _settings.linearFogStart = EditorGUILayout.FloatField(_settings.linearFogStart);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Linear fog end");
+                    _settings.linearFogEnd = EditorGUILayout.FloatField(_settings.linearFogEnd);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Ambient color");
+                    _settings.ambientColor = EditorGUILayout.ColorField(_settings.ambientColor);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.EndVertical();
+                    GUILayout.EndHorizontal();
+
+                }
+
+                _showMiscSettings = EditorGUILayout.Foldout(_showMiscSettings, "Other settings");
+
+                if (_showMiscSettings)
+                {
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.BeginVertical(GUILayout.Width(20));
+                    EditorGUILayout.Space();
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical();
+
+                    EditorGUI.BeginChangeCheck();
+
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Preview background color");
+                    _settings.previewBackgroundColor = EditorGUILayout.ColorField(_settings.previewBackgroundColor);
+                    GUILayout.EndHorizontal();
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        _backgroundTex = MakeTex(1, 1, _settings.previewBackgroundColor);
+                    }
+
+                    GUILayout.BeginHorizontal();
+                    
+                    GUILayout.Label("Preview filtering");
+                    _settings.previewFiltering = EditorGUILayout.Toggle(_settings.previewFiltering);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.EndVertical();
+                    GUILayout.EndHorizontal();
+
+                }
+
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+
+                ShowAtlases();
+
+                EditorUtility.SetDirty(_settings);
+
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-
-            ShowAtlases();
-
-            EditorUtility.SetDirty(settings);
 
         }
 
@@ -610,7 +638,7 @@ namespace zooperdan.AtlasMaker
         IEnumerator GenerateAtlases()
         {
 
-            string destPath = AddTrailingSlash(settings.outputPath);
+            string destPath = AddTrailingSlash(_settings.outputPath);
 
             Log("Atlas creation started.\n");
             yield return null;
@@ -624,43 +652,43 @@ namespace zooperdan.AtlasMaker
             //cameraObject.transform.position = new Vector3(0f, 0f, -0.5f);
 
             _viewportCamera = cameraObject.GetComponentInChildren<Camera>();
-            _renderTexture = new RenderTexture(settings.screenSize.width, settings.screenSize.height, 24, RenderTextureFormat.Default);
+            _renderTexture = new RenderTexture(_settings.screenSize.width, _settings.screenSize.height, 24, RenderTextureFormat.Default);
             //_renderTexture.antiAliasing = 1;
-            _renderTexture.filterMode = settings.filterMode;
+            _renderTexture.filterMode = _settings.filterMode;
             _viewportCamera.targetTexture = _renderTexture;
 
             // apply custom values to camera and rendersettings
 
-            _viewportCamera.fieldOfView = settings.fov;
-            _viewportCamera.transform.localPosition = new Vector3(0f, settings.offsetY, settings.offsetZ);
-            _viewportCamera.lensShift = new Vector2(0, settings.lensShiftY);
+            _viewportCamera.fieldOfView = _settings.fov;
+            _viewportCamera.transform.localPosition = new Vector3(0f, _settings.offsetY, _settings.offsetZ);
+            _viewportCamera.lensShift = new Vector2(0, _settings.lensShiftY);
 
-            RenderSettings.fog = settings.fog;
-            RenderSettings.fogColor = settings.fogColor;
-            RenderSettings.fogMode = settings.fogMode;
-            RenderSettings.fogDensity = settings.fogDensity;
-            RenderSettings.fogStartDistance = settings.linearFogStart;
-            RenderSettings.fogEndDistance = settings.linearFogEnd;
-            RenderSettings.ambientEquatorColor = settings.ambientColor;
-            RenderSettings.ambientGroundColor = settings.ambientColor;
-            RenderSettings.ambientSkyColor = settings.ambientColor;
+            RenderSettings.fog = _settings.fog;
+            RenderSettings.fogColor = _settings.fogColor;
+            RenderSettings.fogMode = _settings.fogMode;
+            RenderSettings.fogDensity = _settings.fogDensity;
+            RenderSettings.fogStartDistance = _settings.linearFogStart;
+            RenderSettings.fogEndDistance = _settings.linearFogEnd;
+            RenderSettings.ambientEquatorColor = _settings.ambientColor;
+            RenderSettings.ambientGroundColor = _settings.ambientColor;
+            RenderSettings.ambientSkyColor = _settings.ambientColor;
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
 
             // apply light settings
 
             AtlasMakerCam camScript = cameraObject.GetComponent<AtlasMakerCam>();
 
-            switch (settings.lightMode)
+            switch (_settings.lightMode)
             {
                 case LightMode.Point:
                     {
                         camScript.pointLight.gameObject.SetActive(true);
                         camScript.directionalLight.gameObject.SetActive(false);
 
-                        camScript.pointLight.transform.localPosition = settings.pointLightPosition;
-                        camScript.pointLight.range = settings.pointLightRange;
-                        camScript.pointLight.intensity = settings.pointLightIntensity;
-                        camScript.pointLight.color = settings.pointLightColor;
+                        camScript.pointLight.transform.localPosition = _settings.pointLightPosition;
+                        camScript.pointLight.range = _settings.pointLightRange;
+                        camScript.pointLight.intensity = _settings.pointLightIntensity;
+                        camScript.pointLight.color = _settings.pointLightColor;
                     }
                     break;
                 case LightMode.Directional:
@@ -668,9 +696,9 @@ namespace zooperdan.AtlasMaker
                         camScript.pointLight.gameObject.SetActive(false);
                         camScript.directionalLight.gameObject.SetActive(true);
 
-                        camScript.directionalLight.transform.localEulerAngles = settings.directionalLightRotation;
-                        camScript.directionalLight.intensity = settings.directionalLightIntensity;
-                        camScript.directionalLight.color = settings.directionalLightColor;
+                        camScript.directionalLight.transform.localEulerAngles = _settings.directionalLightRotation;
+                        camScript.directionalLight.intensity = _settings.directionalLightIntensity;
+                        camScript.directionalLight.color = _settings.directionalLightColor;
                     }
                     break;
                 default:
@@ -683,11 +711,11 @@ namespace zooperdan.AtlasMaker
 
             // iterate through all atlases and their layers
 
-            for (int atlasIndex = 0; atlasIndex < settings.atlases.Count; atlasIndex++)
+            for (int atlasIndex = 0; atlasIndex < _settings.atlases.Count; atlasIndex++)
             {
-                if (settings.atlases[atlasIndex].enabled)
+                if (_settings.atlases[atlasIndex].enabled)
                 {
-                    RenderAtlas(settings.atlases[atlasIndex], destPath);
+                    RenderAtlas(_settings.atlases[atlasIndex], destPath);
                 }
             }
 
@@ -708,9 +736,9 @@ namespace zooperdan.AtlasMaker
             {
                 version = VERSION_NUMBER.ToString(),
                 generated = DateTime.Now.ToString(),
-                depth = settings.dungeonDepth,
-                width = settings.dungeonWidth,
-                resolution = settings.screenSize
+                depth = _settings.dungeonDepth,
+                width = _settings.dungeonWidth,
+                resolution = _settings.screenSize
             };
 
             GeneratedImageResult gri;
@@ -732,9 +760,9 @@ namespace zooperdan.AtlasMaker
 
                     _squaresToGenerateList.Clear();
 
-                    for (int b = -settings.dungeonWidth; b < settings.dungeonWidth; b++)
+                    for (int b = -_settings.dungeonWidth; b < _settings.dungeonWidth; b++)
                     {
-                        for (int a = -settings.dungeonDepth; a <= 0; a++)
+                        for (int a = -_settings.dungeonDepth; a <= 0; a++)
                         {
                             _squaresToGenerateList.Add(new Vector2Int(b, a));
                         }
@@ -743,9 +771,9 @@ namespace zooperdan.AtlasMaker
                 } else {
 
                     _squaresToGenerateList.Clear();
-                    for (int b = 0; b > -settings.dungeonWidth; b--)
+                    for (int b = 0; b > -_settings.dungeonWidth; b--)
                     {
-                        for (int a = 0; a <= settings.dungeonDepth; a++)
+                        for (int a = 0; a <= _settings.dungeonDepth; a++)
                         {
                             _squaresToGenerateList.Add(new Vector2Int(0 - b, 0 - a));
                         }
@@ -826,7 +854,7 @@ namespace zooperdan.AtlasMaker
                                     }
                                     else
                                     {
-                                        if (squareIndex <= settings.dungeonDepth)
+                                        if (squareIndex <= _settings.dungeonDepth)
                                         {
                                             // front
                                             if (wallScript != null)
@@ -985,18 +1013,18 @@ namespace zooperdan.AtlasMaker
 
             if (GUILayout.Button("Add atlas"))
             {
-                settings.atlases.Add(null);
+                _settings.atlases.Add(null);
             }
 
-            for (int i = 0; i < settings.atlases.Count; i++)
+            for (int i = 0; i < _settings.atlases.Count; i++)
             {
                 GUILayout.BeginHorizontal();
-                settings.atlases[i] = (Atlas)EditorGUILayout.ObjectField(settings.atlases[i], typeof(Atlas), true);
+                _settings.atlases[i] = (Atlas)EditorGUILayout.ObjectField(_settings.atlases[i], typeof(Atlas), true);
                 if (GUILayout.Button("-", GUILayout.Width(24)))
                 {
-                    settings.atlases.RemoveAt(i);
+                    _settings.atlases.RemoveAt(i);
                 }
-                EditorUtility.SetDirty(settings);
+                EditorUtility.SetDirty(_settings);
                 GUILayout.EndHorizontal();
             }
 
@@ -1066,32 +1094,38 @@ namespace zooperdan.AtlasMaker
 
             int index = 0;
 
-            if (!(settings.dungeonDepth >= 1 && settings.dungeonDepth <= 10))
+            if (!_settings)
+            {
+                result.Add("You need to assign an Atlas Maker Settings file");
+                return result;
+            }
+
+            if (!(_settings.dungeonDepth >= 1 && _settings.dungeonDepth <= 10))
             {
                 result.Add("Valid values for dungeon depth are 1 to 10");
                 return result;
             }
 
-            if (!(settings.dungeonWidth >= 1 && settings.dungeonWidth <= 10))
+            if (!(_settings.dungeonWidth >= 1 && _settings.dungeonWidth <= 10))
             {
                 result.Add("Valid values for dungeon width are 1 to 10");
                 return result;
             }
 
-            if (!IsValidFolder(settings.outputPath.Trim()))
+            if (!IsValidFolder(_settings.outputPath.Trim()))
             {
                 result.Add("You need to specify a valid output folder.");
                 return result;
             }
 
 
-            if (settings.atlases.Count == 0)
+            if (_settings.atlases.Count == 0)
             {
                 result.Add("There are no atlases to make.");
                 return result;
             }
 
-            foreach (Atlas atlas in settings.atlases)
+            foreach (Atlas atlas in _settings.atlases)
             {
 
                 if (atlas == null)

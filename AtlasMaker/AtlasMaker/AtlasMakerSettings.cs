@@ -56,7 +56,7 @@ namespace zooperdan.AtlasMaker
         public float linearFogStart = 0.0f;
         public float linearFogEnd = 300.0f;
 
-        public Color ambientColor = Color.black;
+        public Color ambientColor = Color.white;
 
         // other settings
 
