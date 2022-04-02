@@ -1,7 +1,7 @@
 # AtlasMaker for 2D Dungeon Crawlers
  A package for Unity which will allow you to render images atlases to be used in developing first person grid dungeon crawlers.
  
- ![AtlasMaker](Media/screenshot.png)
+ ![AtlasMaker](Media/screenshot-2.png)
 
 ## How to use
 
