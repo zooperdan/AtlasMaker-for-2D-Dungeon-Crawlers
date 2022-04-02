@@ -36,6 +36,12 @@ Please note that the example is unoptimized and the dungeon rendering could like
 
 ## Change log
 
+Version 0.8
+
+>	- Now you can have multiple AtlasMakerSettings files. This is useful if you are generating atlases for different projects.
+>	- Removed all .Space() calls in the inspector code so that AtlasMaker now also works on older versions of Unity. It is however recommended to use a recent version whenever possible.
+>	- Changed default ambient color to white so that there are visible pixels even when there is a combination of lit material and no light source.
+
 Version 0.7
 
 >	- Added a "Preview filtering" property in other settings rollout which toggles between interpolated and nearest neighbour scaling for the preview window.

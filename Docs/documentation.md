@@ -19,6 +19,7 @@ AtlasMaker can generate multiple atlases at once, and a single atlas can have mu
 General
 | Property  | Description |
 | :------------- |  :------------- |
+| Settings file  | Assign an AtlasMakerSettings file here.  |
 | Dungeon depth  | How many grid cells should be visible from eye point of view  |
 | Dungeon width  | How many grid cells should be visible from left to right  |
 | Filter mode  | Choose between sharp or interpolated rendering output.  |
