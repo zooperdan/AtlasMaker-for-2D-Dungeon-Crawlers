@@ -47,6 +47,8 @@ Light settings (Point light)
 | Color | The color of the light.  |
 | Range | The range of the light.  |
 | Intensity  | Light intensity multiplier.  |
+| Shadows  | Set the shadow type.  |
+| Shadow strength  | Set the strength of the shadow.  |
 
 Light settings (Directional light)
 | Property  | Description |
@@ -54,6 +56,8 @@ Light settings (Directional light)
 | Rotation | The rotation of the light. Use this to control where the light (sun) comes from. |
 | Intensity  | Light intensity multiplier.  |
 | Color  | The color of the light.  |
+| Shadows  | Set the shadow type.  |
+| Shadow strength  | Set the strength of the shadow.  |
 
 Render settings
 | Property  | Description |
@@ -71,6 +75,7 @@ Other settings
 | :------------- |  :------------- |
 | Preview background color | Sets the background color for the atlas preview window. |
 | Preview filtering  | Toggles the interpolation/smoothing of the preview output.  |
+| Palette  | Assign a palette (texture) file here to color quantize the generated atlas. |
 
 ## Atlas
 
