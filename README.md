@@ -30,11 +30,18 @@ Please note that the example is unoptimized and the dungeon rendering could like
 >		- Optimized (This is the current one that is already implemented).
 >		- Layed out. This method will arrange the atlas in a way so the side walls are connected to each other like they would be when rendered in a dungeon. This makes it easy to use this as a template for manual pixelling on top.
 >	- Output the atlas data to other formats in addition to JSON (LUA, XML, CSV, BINARY etc.)
->	- Color quantization to indexed palettes presets.
+>	- Dithering when performing color quantization on the generated output.
 >	- Option to write the image output to separate image files instead of a single atlas image.
 >	- Documentation on how to use this tool.
 
 ## Change log
+
+Version 0.9
+
+>	- Now you can assign a palette and the generated output will be color quantized to match. No dithering yet but that will come.
+>	- Added a property under light settings where you can toggle shadow casting.
+>	- Added a property under light settings where you can set the shadow strength.
+>	- Changed camera rendering method to deferred for better visual result.
 
 Version 0.8
 
