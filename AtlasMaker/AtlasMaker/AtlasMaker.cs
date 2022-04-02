@@ -9,6 +9,54 @@ using Newtonsoft.Json;
 
 namespace zooperdan.AtlasMaker
 {
+    [Serializable]
+    public struct YUVStruct
+    {
+        public double y;
+        public double u;
+        public double v;
+    }
+
+
+    [Serializable]
+    public class Palette
+    {
+        public List<Color> colors = new List<Color>();
+        
+        public void Clear()
+        {
+            this.colors.Clear();
+        }
+
+        public void ColorsFromTexture(Texture2D texture)
+        {
+            this.Clear();
+
+            Color[] cols = texture.GetPixels();
+
+            foreach (Color col in cols)
+            {
+                this.AddColor(col);
+            }
+
+        }
+
+        private void AddColor(Color color)
+        {
+
+            foreach (Color col in this.colors)
+            {
+                if ((col.r != color.r) || (col.g != color.g) || (col.b != color.b))
+                {
+                    this.colors.Add(color);
+                    return;
+                }
+            }
+
+            this.colors.Add(color);
+
+        }
+    }
 
     [Serializable]
     public struct Vector4Int
@@ -94,7 +142,7 @@ namespace zooperdan.AtlasMaker
     {
         public string version;
         public string generated;
-        public Size resolution;
+        public ScreenSize resolution;
         public int depth;
         public int width;
         [SerializeField]
@@ -167,7 +215,7 @@ namespace zooperdan.AtlasMaker
         private AtlasMakerSettings _settings;
         GameObject atlasMakerCamera;
 
-        private const string VERSION_NUMBER = "0.8";
+        private const string VERSION_NUMBER = "0.9";
 
         private List<Vector2Int> _squaresToGenerateList = new List<Vector2Int>();
         private DataContainer _dataContainer = new DataContainer();
@@ -182,6 +230,7 @@ namespace zooperdan.AtlasMaker
         private bool _showMiscSettings = false;
         private Texture2D atlasTexture;
         private static Texture2D _backgroundTex;
+        private Palette _palette = new Palette();
 
         private Camera _viewportCamera;
         private RenderTexture _renderTexture;
@@ -393,7 +442,7 @@ namespace zooperdan.AtlasMaker
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    
+                   
                     GUILayout.Label("Y offset");
                     _settings.offsetY = EditorGUILayout.FloatField(_settings.offsetY);
                     GUILayout.EndHorizontal();
@@ -460,14 +509,24 @@ namespace zooperdan.AtlasMaker
                                 _settings.pointLightIntensity = EditorGUILayout.FloatField(_settings.pointLightIntensity);
                                 GUILayout.EndHorizontal();
 
+                                GUILayout.BeginHorizontal();
+                                GUILayout.Label("Shadows");
+                                _settings.pointLightShadows = (LightShadows)EditorGUILayout.EnumPopup(_settings.pointLightShadows);
+                                GUILayout.EndHorizontal();
 
-                            } break;
+                                GUILayout.BeginHorizontal();
+                                GUILayout.Label("Shadow strength");
+                                _settings.pointLightShadowStrength = EditorGUILayout.FloatField(_settings.pointLightShadowStrength);
+                                GUILayout.EndHorizontal();
+
+
+                            }
+                            break;
 
                         case LightMode.Directional:
                             {
 
                                 GUILayout.BeginHorizontal();
-                                
                                 GUILayout.Label("Rotation");
                                 _settings.directionalLightRotation = EditorGUILayout.Vector3Field("", _settings.directionalLightRotation);
                                 GUILayout.EndHorizontal();
@@ -479,9 +538,18 @@ namespace zooperdan.AtlasMaker
                                 GUILayout.EndHorizontal();
 
                                 GUILayout.BeginHorizontal();
-                                
                                 GUILayout.Label("Color");
                                 _settings.directionalLightColor = EditorGUILayout.ColorField(_settings.directionalLightColor);
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                GUILayout.Label("Shadows");
+                                _settings.directionalLightShadows = (LightShadows)EditorGUILayout.EnumPopup(_settings.directionalLightShadows);
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                GUILayout.Label("Shadow strength");
+                                _settings.directionalLightShadowStrength = EditorGUILayout.FloatField(_settings.directionalLightShadowStrength);
                                 GUILayout.EndHorizontal();
 
                             }
@@ -577,9 +645,13 @@ namespace zooperdan.AtlasMaker
                     }
 
                     GUILayout.BeginHorizontal();
-                    
                     GUILayout.Label("Preview filtering");
                     _settings.previewFiltering = EditorGUILayout.Toggle(_settings.previewFiltering);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Palette");
+                    _settings.paletteTexture = (Texture2D)EditorGUILayout.ObjectField(_settings.paletteTexture, typeof(Texture2D), true);
                     GUILayout.EndHorizontal();
 
                     GUILayout.EndVertical();
@@ -663,6 +735,9 @@ namespace zooperdan.AtlasMaker
             _viewportCamera.transform.localPosition = new Vector3(0f, _settings.offsetY, _settings.offsetZ);
             _viewportCamera.lensShift = new Vector2(0, _settings.lensShiftY);
 
+            UnityStandardAssets.ImageEffects.GlobalFog gf = _viewportCamera.GetComponent<UnityStandardAssets.ImageEffects.GlobalFog>();
+            gf.enabled = _settings.fog;
+
             RenderSettings.fog = _settings.fog;
             RenderSettings.fogColor = _settings.fogColor;
             RenderSettings.fogMode = _settings.fogMode;
@@ -689,6 +764,8 @@ namespace zooperdan.AtlasMaker
                         camScript.pointLight.range = _settings.pointLightRange;
                         camScript.pointLight.intensity = _settings.pointLightIntensity;
                         camScript.pointLight.color = _settings.pointLightColor;
+                        camScript.pointLight.shadows = _settings.pointLightShadows;
+                        camScript.pointLight.shadowStrength = _settings.pointLightShadowStrength;
                     }
                     break;
                 case LightMode.Directional:
@@ -699,6 +776,8 @@ namespace zooperdan.AtlasMaker
                         camScript.directionalLight.transform.localEulerAngles = _settings.directionalLightRotation;
                         camScript.directionalLight.intensity = _settings.directionalLightIntensity;
                         camScript.directionalLight.color = _settings.directionalLightColor;
+                        camScript.directionalLight.shadows = _settings.directionalLightShadows;
+                        camScript.directionalLight.shadowStrength = _settings.directionalLightShadowStrength;
                     }
                     break;
                 default:
@@ -727,6 +806,110 @@ namespace zooperdan.AtlasMaker
 
             yield return new WaitForSeconds(1);
 
+        }
+
+        private void setPalette()
+        {
+            if (!atlasTexture)
+            {
+                return;
+            }
+
+            if (!_settings.paletteTexture)
+            {
+                return;
+            }
+
+            // convert the texture into a palette
+
+            _palette.ColorsFromTexture(_settings.paletteTexture);
+
+            int mipCount = Mathf.Min(3, atlasTexture.mipmapCount);
+
+            Color[] cols = atlasTexture.GetPixels();
+                
+            for (int i = 0; i < cols.Length; ++i)
+            {
+                if (cols[i].a != 0)
+                {
+
+                    Color nearestColor = Color.red;
+
+                    if (findNearestColor(cols[i], out nearestColor))
+                    {
+                        cols[i] = nearestColor;
+                    }
+
+                }
+            }
+
+            atlasTexture.SetPixels(cols);
+            atlasTexture.Apply(false);
+
+        }
+
+        private YUVStruct YUVfromRGB(Color color)
+        {
+            double y = 0.257 * color.r + 0.504 * color.g + 0.098 * color.b + 16;
+            double u = -0.148 * color.r - 0.291 * color.g + 0.439 * color.b + 128;
+            double v = 0.439 * color.r - 0.368 * color.g - 0.071 * color.b + 128;
+            double weight_y = 5;
+            double weight_u = 1;
+            double weight_v = 1;
+            y *= weight_y;
+            u *= weight_u;
+            v *= weight_v;
+            return new YUVStruct { y = y, u = u, v = v };
+        }
+
+        private double GetColorDistanceRGB (Color current, Color match)
+        {
+            double redDifference;
+            double greenDifference;
+            double blueDifference;
+
+            redDifference = current.r - match.r;
+            greenDifference = current.g - match.g;
+            blueDifference = current.b - match.b;
+
+            return redDifference * redDifference + greenDifference * greenDifference + blueDifference * blueDifference;
+        }
+
+        private double GetColorDistanceYUV(Color current, Color match)
+        {
+            double yDifference;
+            double uDifference;
+            double vDifference;
+
+            YUVStruct yuvCurrent = this.YUVfromRGB(current);
+            YUVStruct yuvMatch = this.YUVfromRGB(match);
+
+            yDifference = yuvCurrent.y - yuvMatch.y;
+            uDifference = yuvCurrent.u - yuvMatch.u;
+            vDifference = yuvCurrent.v - yuvMatch.v;
+
+            return yDifference * yDifference + uDifference * uDifference + vDifference * vDifference;
+        }
+
+        private bool findNearestColor(Color srcColor, out Color nearestColor)
+        {
+
+            double shortestDistance = 9007199254740991;
+
+            nearestColor = Color.black;
+
+            for (var i = 0; i < _palette.colors.Count; i++)
+            {
+                double distance = GetColorDistanceRGB(srcColor, _palette.colors[i]);
+
+                if (distance < shortestDistance)
+                {
+                    nearestColor = _palette.colors[i];
+                    shortestDistance = distance;
+                }
+            }
+
+            return true;
         }
 
         private void RenderAtlas(Atlas atlas, string destPath)
@@ -888,7 +1071,7 @@ namespace zooperdan.AtlasMaker
                                 break;
                             case AtlasLayerType.OBJECT:
                                 {
-                                    if (vec.y < 0)
+                                    if (!(vec.y == 0 && vec.x == 0))
                                     {
                                         gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, atlas.layers[layerIndex].type.ToString().ToLower());
                                         if (gri != null)
@@ -950,6 +1133,9 @@ namespace zooperdan.AtlasMaker
                 atlasTexture = new Texture2D(8192, 8192, TextureFormat.ARGB32, false);
                 atlasTexture.wrapMode = TextureWrapMode.Clamp;
                 Rect[] rects = atlasTexture.PackTextures(textures, 3, 8192);
+
+                setPalette();
+
                 System.IO.File.WriteAllBytes(destPath + atlas.id + ".png", atlasTexture.EncodeToPNG());
 
                 int rectIndex = 0;
@@ -1097,6 +1283,12 @@ namespace zooperdan.AtlasMaker
             if (!_settings)
             {
                 result.Add("You need to assign an Atlas Maker Settings file");
+                return result;
+            }
+
+            if (_settings.paletteTexture && !_settings.paletteTexture.isReadable)
+            {
+                result.Add("The palette texture is not readable. You can make the texture readable in the Texture Import Settings.");
                 return result;
             }
 

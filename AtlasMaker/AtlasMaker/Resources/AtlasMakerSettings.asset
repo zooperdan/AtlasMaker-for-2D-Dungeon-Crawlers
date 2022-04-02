@@ -16,29 +16,31 @@ MonoBehaviour:
   outputPath: e:\
   dungeonDepth: 4
   dungeonWidth: 4
-  screenSize:
-    width: 238
-    height: 190
   atlases:
   - {fileID: 11400000, guid: dde56e478a0c10c4cb9951ab798faa93, type: 2}
   fov: 35
   offsetY: 0.6
   offsetZ: 2
   lensShiftY: -0.2
-  lightMode: 2
+  lightMode: 0
   pointLightPosition: {x: 0, y: 0, z: 0}
   pointLightRange: 3
   pointLightIntensity: 2.75
   pointLightColor: {r: 1, g: 1, b: 1, a: 1}
+  pointLightShadows: 0
+  pointLightShadowStrength: 1
   directionalLightRotation: {x: 45, y: -15, z: 0}
   directionalLightIntensity: 1
   directionalLightColor: {r: 1, g: 1, b: 1, a: 1}
+  directionalLightShadows: 0
+  directionalLightShadowStrength: 1
   fog: 1
   fogColor: {r: 0, g: 0, b: 0, a: 1}
   fogMode: 3
-  fogDensity: 0.4
+  fogDensity: 0.2
   linearFogStart: 0
   linearFogEnd: 6
   ambientColor: {r: 1, g: 1, b: 1, a: 1}
   previewBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   previewFiltering: 0
+  paletteTexture: {fileID: 0}

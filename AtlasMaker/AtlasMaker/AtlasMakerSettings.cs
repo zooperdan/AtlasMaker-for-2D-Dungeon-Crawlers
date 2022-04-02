@@ -12,6 +12,11 @@ namespace zooperdan.AtlasMaker
         Directional
     }
 
+    public struct ScreenSize
+    {
+        public int width;
+        public int height;
+    }
 
     [CreateAssetMenu(fileName = "AtlasMakerSettings", menuName = "zooperdan/AtlasMaker/AtlasMakerSettings", order = 1)]
     public class AtlasMakerSettings : ScriptableObject
@@ -20,15 +25,16 @@ namespace zooperdan.AtlasMaker
         public string outputPath = "";
         public int dungeonDepth = 5;
         public int dungeonWidth = 3;
-        public Size screenSize = new Size();
+        //public Size screenSize = new Size();
+        public ScreenSize screenSize = new ScreenSize { width = 320, height = 256 };
         public List<Atlas> atlases = new List<Atlas>();
 
         // camera settings
 
-        public float fov = 60f;
-        public float offsetY = 0.5f;
-        public float offsetZ = 2.05f;
-        public float lensShiftY = 0.2f;
+        public float fov = 35f;
+        public float offsetY = 0.6f;
+        public float offsetZ = 2.0f;
+        public float lensShiftY = -0.2f;
 
         // light settings
 
@@ -40,12 +46,16 @@ namespace zooperdan.AtlasMaker
         public float pointLightRange = 10f;
         public float pointLightIntensity = 1f;
         public Color pointLightColor = Color.white;
+        public LightShadows pointLightShadows = LightShadows.None;
+        public float pointLightShadowStrength = 1f;
 
         // directional light settings
 
         public Vector3 directionalLightRotation = new Vector3(45f, -15f, 0f);
         public float directionalLightIntensity = 1f;
         public Color directionalLightColor = Color.white;
+        public LightShadows directionalLightShadows = LightShadows.None;
+        public float directionalLightShadowStrength = 1f;
 
         // render settings
 
@@ -62,6 +72,8 @@ namespace zooperdan.AtlasMaker
 
         public Color previewBackgroundColor = Color.black;
         public bool previewFiltering = false;
+        public Texture2D paletteTexture;
+
     }
 
 }
