@@ -20,7 +20,7 @@ There is only one required package and it can be downloaded from the built-in pa
 
 You might want to check out a small [Example project](/Example/LÖVE/) for the [LÖVE](https://love2d.org/) framework which demonstrates atlas loading and rendering of a dungeon.
 
-![AtlasMaker example](Media/screenshot_example.png)
+![AtlasMaker example](Media/example.gif)
 
 Please note that the example is unoptimized and the dungeon rendering could likely be implemented in better ways but it should be enough to get you started.
 
