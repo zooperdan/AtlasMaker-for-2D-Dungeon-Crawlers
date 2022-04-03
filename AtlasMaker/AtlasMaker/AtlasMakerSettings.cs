@@ -73,6 +73,8 @@ namespace zooperdan.AtlasMaker
         public Color previewBackgroundColor = Color.black;
         public bool previewFiltering = false;
         public Texture2D paletteTexture;
+        public bool ditherAtlas = true;
+        public float ditherAmount = 500f;
 
     }
 

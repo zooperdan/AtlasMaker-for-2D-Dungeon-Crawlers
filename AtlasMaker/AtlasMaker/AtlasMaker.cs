@@ -215,7 +215,7 @@ namespace zooperdan.AtlasMaker
         private AtlasMakerSettings _settings;
         GameObject atlasMakerCamera;
 
-        private const string VERSION_NUMBER = "0.9";
+        private const string VERSION_NUMBER = "0.9.1";
 
         private List<Vector2Int> _squaresToGenerateList = new List<Vector2Int>();
         private DataContainer _dataContainer = new DataContainer();
@@ -311,9 +311,9 @@ namespace zooperdan.AtlasMaker
 
             GUILayout.EndArea();
 
-            float previewWidth = Screen.width - toolbarWidth/2;
+            float previewWidth = Screen.width - toolbarWidth / 2;
 
-            rect = new Rect(toolbarWidth/2, 0, previewWidth, Screen.height);
+            rect = new Rect(toolbarWidth / 2, 0, previewWidth, Screen.height);
 
             GUILayout.BeginArea(rect);
 
@@ -322,7 +322,7 @@ namespace zooperdan.AtlasMaker
             if (atlasTexture && _settings)
             {
                 atlasTexture.filterMode = _settings.previewFiltering ? FilterMode.Bilinear : FilterMode.Point;
-                EditorGUI.DrawPreviewTexture(new Rect((toolbarWidth / 2) + 10, 10, previewWidth - ((toolbarWidth / 2) + 10), Screen.height-40), atlasTexture, _previewMaterial, ScaleMode.ScaleToFit);
+                EditorGUI.DrawPreviewTexture(new Rect((toolbarWidth / 2) + 10, 10, previewWidth - ((toolbarWidth / 2) + 10), Screen.height - 40), atlasTexture, _previewMaterial, ScaleMode.ScaleToFit);
             }
 
             GUILayout.EndArea();
@@ -436,25 +436,25 @@ namespace zooperdan.AtlasMaker
                     GUILayout.BeginVertical();
 
                     GUILayout.BeginHorizontal();
-                    
+
                     GUILayout.Label("Field of view");
                     _settings.fov = EditorGUILayout.FloatField(_settings.fov);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                   
+
                     GUILayout.Label("Y offset");
                     _settings.offsetY = EditorGUILayout.FloatField(_settings.offsetY);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    
+
                     GUILayout.Label("Z offset");
                     _settings.offsetZ = EditorGUILayout.FloatField(_settings.offsetZ);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    
+
                     GUILayout.Label("Lens shift Y");
                     _settings.lensShiftY = EditorGUILayout.FloatField(_settings.lensShiftY);
                     GUILayout.EndHorizontal();
@@ -475,7 +475,7 @@ namespace zooperdan.AtlasMaker
                     GUILayout.BeginVertical();
 
                     GUILayout.BeginHorizontal();
-                    
+
                     GUILayout.Label("Light Mode");
                     _settings.lightMode = (LightMode)EditorGUILayout.EnumPopup(_settings.lightMode);
                     GUILayout.EndHorizontal();
@@ -486,25 +486,25 @@ namespace zooperdan.AtlasMaker
                             {
 
                                 GUILayout.BeginHorizontal();
-                                
+
                                 GUILayout.Label("Offset");
                                 _settings.pointLightPosition = EditorGUILayout.Vector3Field("", _settings.pointLightPosition);
                                 GUILayout.EndHorizontal();
 
                                 GUILayout.BeginHorizontal();
-                                
+
                                 GUILayout.Label("Color");
                                 _settings.pointLightColor = EditorGUILayout.ColorField(_settings.pointLightColor);
                                 GUILayout.EndHorizontal();
 
                                 GUILayout.BeginHorizontal();
-                                
+
                                 GUILayout.Label("Range");
                                 _settings.pointLightRange = EditorGUILayout.FloatField(_settings.pointLightRange);
                                 GUILayout.EndHorizontal();
 
                                 GUILayout.BeginHorizontal();
-                                
+
                                 GUILayout.Label("Intensity");
                                 _settings.pointLightIntensity = EditorGUILayout.FloatField(_settings.pointLightIntensity);
                                 GUILayout.EndHorizontal();
@@ -532,7 +532,7 @@ namespace zooperdan.AtlasMaker
                                 GUILayout.EndHorizontal();
 
                                 GUILayout.BeginHorizontal();
-                                
+
                                 GUILayout.Label("Intensity");
                                 _settings.directionalLightIntensity = EditorGUILayout.FloatField(_settings.directionalLightIntensity);
                                 GUILayout.EndHorizontal();
@@ -598,19 +598,16 @@ namespace zooperdan.AtlasMaker
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    
                     GUILayout.Label("Linear fog start");
                     _settings.linearFogStart = EditorGUILayout.FloatField(_settings.linearFogStart);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    
                     GUILayout.Label("Linear fog end");
                     _settings.linearFogEnd = EditorGUILayout.FloatField(_settings.linearFogEnd);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    
                     GUILayout.Label("Ambient color");
                     _settings.ambientColor = EditorGUILayout.ColorField(_settings.ambientColor);
                     GUILayout.EndHorizontal();
@@ -634,7 +631,7 @@ namespace zooperdan.AtlasMaker
                     EditorGUI.BeginChangeCheck();
 
                     GUILayout.BeginHorizontal();
-                    
+
                     GUILayout.Label("Preview background color");
                     _settings.previewBackgroundColor = EditorGUILayout.ColorField(_settings.previewBackgroundColor);
                     GUILayout.EndHorizontal();
@@ -653,6 +650,17 @@ namespace zooperdan.AtlasMaker
                     GUILayout.Label("Palette");
                     _settings.paletteTexture = (Texture2D)EditorGUILayout.ObjectField(_settings.paletteTexture, typeof(Texture2D), true);
                     GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Dither output");
+                    _settings.ditherAtlas = EditorGUILayout.Toggle(_settings.ditherAtlas);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Dither amount");
+                    _settings.ditherAmount = EditorGUILayout.FloatField(_settings.ditherAmount);
+                    GUILayout.EndHorizontal();
+
 
                     GUILayout.EndVertical();
                     GUILayout.EndHorizontal();
@@ -827,7 +835,12 @@ namespace zooperdan.AtlasMaker
             int mipCount = Mathf.Min(3, atlasTexture.mipmapCount);
 
             Color[] cols = atlasTexture.GetPixels();
-                
+
+            if (_settings.ditherAtlas)
+            {
+                cols = ditherImageData4x4(cols, atlasTexture.width, atlasTexture.height, _settings.ditherAmount);
+            }
+
             for (int i = 0; i < cols.Length; ++i)
             {
                 if (cols[i].a != 0)
@@ -862,7 +875,7 @@ namespace zooperdan.AtlasMaker
             return new YUVStruct { y = y, u = u, v = v };
         }
 
-        private double GetColorDistanceRGB (Color current, Color match)
+        private double GetColorDistanceRGB(Color current, Color match)
         {
             double redDifference;
             double greenDifference;
@@ -889,6 +902,43 @@ namespace zooperdan.AtlasMaker
             vDifference = yuvCurrent.v - yuvMatch.v;
 
             return yDifference * yDifference + uDifference * uDifference + vDifference * vDifference;
+        }
+
+        private Color[] ditherImageData4x4(Color[] cols, int width, int height, float ditherAmount)
+        {
+
+            int[,] threshold_maps = new int[,]
+            {
+                { 0, 48, 12, 60, 3, 51, 15, 63},
+                {32, 16, 44, 28, 35, 19, 47, 31},
+                {8, 56, 4, 52, 11, 59, 7, 55},
+                {40, 24, 36, 20, 43, 27, 39, 23},
+                {2, 50, 14, 62, 1, 49, 13, 61},
+                {34, 18, 46, 30, 33, 17, 45, 29},
+                {10, 58, 6, 54, 9, 57, 5, 53},
+                {42, 26, 38, 22, 41, 25, 37, 21}
+            };
+
+            float depth = 1;
+            int moo = 8;
+            int x, y;
+            int a;
+            float b;
+
+            for (x = 0; x < width; x++)
+            {
+                for (y = 0; y < height; y++)
+                {
+                    a = (x + (y*width));
+                    b = threshold_maps[x % moo,y % moo] / (32 - ditherAmount);
+                    cols[a].r = ((cols[a].r + b) / depth) * depth;
+                    cols[a].g = ((cols[a].g + b) / depth) * depth;
+                    cols[a].b = ((cols[a].b + b) / depth) * depth;
+                }
+            }
+
+            return cols;
+
         }
 
         private bool findNearestColor(Color srcColor, out Color nearestColor)

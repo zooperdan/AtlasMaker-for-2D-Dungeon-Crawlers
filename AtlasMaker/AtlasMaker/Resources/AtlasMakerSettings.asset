@@ -44,3 +44,5 @@ MonoBehaviour:
   previewBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   previewFiltering: 0
   paletteTexture: {fileID: 0}
+  ditherAtlas: 1
+  ditherAmount: 500
