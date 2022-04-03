@@ -35,6 +35,12 @@ Please note that the example is unoptimized and the dungeon rendering could like
 
 ## Change log
 
+Version 0.9.2
+
+>	- Added option on mark atlas layers for rendering from a given side. This is useful if you want to be able to walk around the object in-game. This only applies to atlas layers of type "OBJECT".
+>	- Moved the Enabled property from atlas to the list of atlases in AtlasMaker window.
+>	- Fixed wonky positions in the included prefabs. Now everything is posistioned at the origin (0,0).
+
 Version 0.9.1
 
 >	- Added properties for toggle dithering of generated atlas and to set the dither strength.
