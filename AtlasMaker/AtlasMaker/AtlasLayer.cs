@@ -22,6 +22,14 @@ namespace zooperdan.AtlasMaker
         ALL = 2
     };
 
+    public enum AtlasLayerSide
+    {
+        FRONT = 0,
+        REAR = 1,
+        LEFT = 2,
+        RIGHT = 3
+    };
+
     [CreateAssetMenu(fileName = "AtlasLayer", menuName = "zooperdan/AtlasMaker/AtlasLayer", order = 1)]
     public class AtlasLayer : ScriptableObject
     {
@@ -30,6 +38,7 @@ namespace zooperdan.AtlasMaker
         public string id;
         public AtlasLayerType type = AtlasLayerType.WALL;
         public AtlasLayerRenderMode renderMode = AtlasLayerRenderMode.LEFT;
+        public AtlasLayerSide renderSide = AtlasLayerSide.FRONT;
     }
 
 }

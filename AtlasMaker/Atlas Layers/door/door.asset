@@ -17,3 +17,4 @@ MonoBehaviour:
   id: door
   type: 3
   renderMode: 0
+  renderSide: 0

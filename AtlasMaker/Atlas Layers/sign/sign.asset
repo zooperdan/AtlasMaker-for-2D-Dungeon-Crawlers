@@ -17,3 +17,4 @@ MonoBehaviour:
   id: sign
   type: 3
   renderMode: 0
+  renderSide: 0

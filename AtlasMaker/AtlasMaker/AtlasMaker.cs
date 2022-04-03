@@ -215,7 +215,7 @@ namespace zooperdan.AtlasMaker
         private AtlasMakerSettings _settings;
         GameObject atlasMakerCamera;
 
-        private const string VERSION_NUMBER = "0.9.1";
+        private const string VERSION_NUMBER = "0.9.2";
 
         private List<Vector2Int> _squaresToGenerateList = new List<Vector2Int>();
         private DataContainer _dataContainer = new DataContainer();
@@ -257,16 +257,7 @@ namespace zooperdan.AtlasMaker
                 atlasMakerCamera = (GameObject)Resources.Load("AtlasMakerCamera") as GameObject;
             }
 
-            if (!_backgroundTex)
-            {
-                if (_settings)
-                {
-                    _backgroundTex = MakeTex(1, 1, _settings.previewBackgroundColor);
-                } else
-                {
-                    _backgroundTex = MakeTex(1, 1, Color.black);
-                }
-            }
+
 
             if (!_previewMaterial)
             {
@@ -317,6 +308,15 @@ namespace zooperdan.AtlasMaker
 
             GUILayout.BeginArea(rect);
 
+            if (_settings)
+            {
+                _backgroundTex = MakeTex(1, 1, _settings.previewBackgroundColor);
+            }
+            else
+            {
+                _backgroundTex = MakeTex(1, 1, Color.black);
+            }
+
             GUI.DrawTexture(rect, _backgroundTex, ScaleMode.StretchToFill);
 
             if (atlasTexture && _settings)
@@ -362,7 +362,6 @@ namespace zooperdan.AtlasMaker
                 {
                     return;
                 }
-
 
                 atlasTexture = null;
                 _validateResult = Validate();
@@ -733,6 +732,7 @@ namespace zooperdan.AtlasMaker
 
             _viewportCamera = cameraObject.GetComponentInChildren<Camera>();
             _renderTexture = new RenderTexture(_settings.screenSize.width, _settings.screenSize.height, 24, RenderTextureFormat.Default);
+            
             //_renderTexture.antiAliasing = 1;
             _renderTexture.filterMode = _settings.filterMode;
             _viewportCamera.targetTexture = _renderTexture;
@@ -843,16 +843,10 @@ namespace zooperdan.AtlasMaker
 
             for (int i = 0; i < cols.Length; ++i)
             {
-                if (cols[i].a != 0)
+                Color nearestColor = Color.red;
+                if (findNearestColor(cols[i], out nearestColor))
                 {
-
-                    Color nearestColor = Color.red;
-
-                    if (findNearestColor(cols[i], out nearestColor))
-                    {
-                        cols[i] = nearestColor;
-                    }
-
+                    cols[i] = nearestColor;
                 }
             }
 
@@ -955,6 +949,7 @@ namespace zooperdan.AtlasMaker
                 if (distance < shortestDistance)
                 {
                     nearestColor = _palette.colors[i];
+                    nearestColor.a = srcColor.a;
                     shortestDistance = distance;
                 }
             }
@@ -1031,6 +1026,34 @@ namespace zooperdan.AtlasMaker
                 {
 
                     model.transform.position = new Vector3(vec.x, 0.0f, vec.y);
+
+                    if (atlas.layers[layerIndex].type == AtlasLayerType.OBJECT)
+                    {
+                        switch (atlas.layers[layerIndex].renderSide)
+                        {
+                            case AtlasLayerSide.FRONT:
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                                }
+                                break;
+                            case AtlasLayerSide.REAR:
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+                                }
+                                break;
+                            case AtlasLayerSide.LEFT:
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
+                                }
+                                break;
+                            case AtlasLayerSide.RIGHT:
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+                                }
+                                break;
+                        }
+                    }
+
 
                     if (atlas.layers[layerIndex].renderMode == AtlasLayerRenderMode.MIDDLE)
                     {
@@ -1123,12 +1146,14 @@ namespace zooperdan.AtlasMaker
                                 {
                                     if (!(vec.y == 0 && vec.x == 0))
                                     {
+
                                         gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, atlas.layers[layerIndex].type.ToString().ToLower());
                                         if (gri != null)
                                         {
                                             jsonLayer.tiles.Add(gri.tile);
                                             generatedImages.Add(gri.image);
                                         }
+
                                     }
                                 }
                                 break;
@@ -1182,6 +1207,8 @@ namespace zooperdan.AtlasMaker
 
                 atlasTexture = new Texture2D(8192, 8192, TextureFormat.ARGB32, false);
                 atlasTexture.wrapMode = TextureWrapMode.Clamp;
+                atlasTexture.alphaIsTransparency = true;
+
                 Rect[] rects = atlasTexture.PackTextures(textures, 3, 8192);
 
                 setPalette();
@@ -1255,6 +1282,7 @@ namespace zooperdan.AtlasMaker
             for (int i = 0; i < _settings.atlases.Count; i++)
             {
                 GUILayout.BeginHorizontal();
+                _settings.atlases[i].enabled = EditorGUILayout.Toggle(_settings.atlases[i].enabled, GUILayout.Width(20));
                 _settings.atlases[i] = (Atlas)EditorGUILayout.ObjectField(_settings.atlases[i], typeof(Atlas), true);
                 if (GUILayout.Button("-", GUILayout.Width(24)))
                 {

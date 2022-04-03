@@ -72,7 +72,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4764633787096536756}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0, y: 0.65, z: 2.05}
+  m_LocalPosition: {x: -0, y: 0.65, z: 1.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7454208458920115277}
@@ -130,9 +130,9 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4764633787096536756}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76b5ec6153a1d55438228df10fe66844, type: 3}
+  m_Script: {fileID: 11500000, guid: eaadca02f516fa04b96bc5ce98c0ee25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   distanceFog: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
   height: 1
   heightDensity: 2
   startDistance: 0
-  fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
+  fogShader: {fileID: 0}
 --- !u!1 &6990692814476510143
 GameObject:
   m_ObjectHideFlags: 0

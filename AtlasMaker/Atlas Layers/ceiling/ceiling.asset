@@ -17,3 +17,4 @@ MonoBehaviour:
   id: ceiling
   type: 2
   renderMode: 2
+  renderSide: 0

@@ -9,6 +9,7 @@ namespace zooperdan.AtlasMaker
     public class Atlas : ScriptableObject
     {
         public string id;
+        [HideInInspector]
         public bool enabled = true;
         public List<AtlasLayer> layers = new List<AtlasLayer>();
     }

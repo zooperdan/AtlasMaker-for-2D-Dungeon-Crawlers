@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace zooperdan.AtlasMaker
 {
 
+    [Serializable]
     public enum LightMode
     {
         None,
@@ -12,6 +14,7 @@ namespace zooperdan.AtlasMaker
         Directional
     }
 
+    [Serializable]
     public struct ScreenSize
     {
         public int width;
@@ -26,6 +29,7 @@ namespace zooperdan.AtlasMaker
         public int dungeonDepth = 5;
         public int dungeonWidth = 3;
         //public Size screenSize = new Size();
+        [SerializeField]
         public ScreenSize screenSize = new ScreenSize { width = 320, height = 256 };
         public List<Atlas> atlases = new List<Atlas>();
 
@@ -33,7 +37,7 @@ namespace zooperdan.AtlasMaker
 
         public float fov = 35f;
         public float offsetY = 0.6f;
-        public float offsetZ = 2.0f;
+        public float offsetZ = 1.0f;
         public float lensShiftY = -0.2f;
 
         // light settings
