@@ -215,7 +215,7 @@ namespace zooperdan.AtlasMaker
         private AtlasMakerSettings _settings;
         GameObject atlasMakerCamera;
 
-        private const string VERSION_NUMBER = "0.9.2";
+        private const string VERSION_NUMBER = "0.9.3";
 
         private List<Vector2Int> _squaresToGenerateList = new List<Vector2Int>();
         private DataContainer _dataContainer = new DataContainer();
@@ -731,10 +731,16 @@ namespace zooperdan.AtlasMaker
             //cameraObject.transform.position = new Vector3(0f, 0f, -0.5f);
 
             _viewportCamera = cameraObject.GetComponentInChildren<Camera>();
-            _renderTexture = new RenderTexture(_settings.screenSize.width, _settings.screenSize.height, 24, RenderTextureFormat.Default);
-            
-            //_renderTexture.antiAliasing = 1;
-            _renderTexture.filterMode = _settings.filterMode;
+
+            _viewportCamera.gameObject.AddComponent<UnityEngine.Rendering.PostProcessing.PostProcessLayer>();
+            UnityEngine.Rendering.PostProcessing.PostProcessLayer ppl = _viewportCamera.gameObject.GetComponent<UnityEngine.Rendering.PostProcessing.PostProcessLayer>();
+            ppl.volumeLayer = ~0;
+
+            _renderTexture = new RenderTexture(_settings.screenSize.width, _settings.screenSize.height, 24, RenderTextureFormat.Default)
+            {
+                filterMode = _settings.filterMode
+            };
+
             _viewportCamera.targetTexture = _renderTexture;
 
             // apply custom values to camera and rendersettings
@@ -743,9 +749,7 @@ namespace zooperdan.AtlasMaker
             _viewportCamera.transform.localPosition = new Vector3(0f, _settings.offsetY, _settings.offsetZ);
             _viewportCamera.lensShift = new Vector2(0, _settings.lensShiftY);
 
-            UnityStandardAssets.ImageEffects.GlobalFog gf = _viewportCamera.GetComponent<UnityStandardAssets.ImageEffects.GlobalFog>();
-            gf.enabled = _settings.fog;
-
+            RenderSettings.skybox = null;
             RenderSettings.fog = _settings.fog;
             RenderSettings.fogColor = _settings.fogColor;
             RenderSettings.fogMode = _settings.fogMode;
@@ -981,16 +985,20 @@ namespace zooperdan.AtlasMaker
                     continue;
                 }
 
-                // while tiles to render?
 
+                // override dungeondepth or width?
+                int dd = atlas.layers[layerIndex].dungeonDepth > 0 ? atlas.layers[layerIndex].dungeonDepth : _settings.dungeonDepth;
+                int dw = atlas.layers[layerIndex].dungeonWidth > 0 ? atlas.layers[layerIndex].dungeonWidth : _settings.dungeonWidth;
+
+                // which tiles to render?
                 if (atlas.layers[layerIndex].renderMode == AtlasLayerRenderMode.ALL)
                 {
 
                     _squaresToGenerateList.Clear();
 
-                    for (int b = -_settings.dungeonWidth; b < _settings.dungeonWidth; b++)
+                    for (int b = -dw; b < dw; b++)
                     {
-                        for (int a = -_settings.dungeonDepth; a <= 0; a++)
+                        for (int a = -dd; a <= 0; a++)
                         {
                             _squaresToGenerateList.Add(new Vector2Int(b, a));
                         }
@@ -999,9 +1007,9 @@ namespace zooperdan.AtlasMaker
                 } else {
 
                     _squaresToGenerateList.Clear();
-                    for (int b = 0; b > -_settings.dungeonWidth; b--)
+                    for (int b = 0; b > -dw; b--)
                     {
-                        for (int a = 0; a <= _settings.dungeonDepth; a++)
+                        for (int a = 0; a <= dd; a++)
                         {
                             _squaresToGenerateList.Add(new Vector2Int(0 - b, 0 - a));
                         }

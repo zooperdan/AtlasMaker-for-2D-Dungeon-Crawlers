@@ -39,6 +39,11 @@ namespace zooperdan.AtlasMaker
         public AtlasLayerType type = AtlasLayerType.WALL;
         public AtlasLayerRenderMode renderMode = AtlasLayerRenderMode.LEFT;
         public AtlasLayerSide renderSide = AtlasLayerSide.FRONT;
+
+        [Header("Override dungeon depth (0 = Disabled)")]
+        public int dungeonDepth = 0;
+        [Header("Override dungeon width (0 = Disabled)")]
+        public int dungeonWidth = 0;
     }
 
 }

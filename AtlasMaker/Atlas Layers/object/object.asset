@@ -18,3 +18,5 @@ MonoBehaviour:
   type: 4
   renderMode: 2
   renderSide: 0
+  dungeonDepth: 0
+  dungeonWidth: 0
