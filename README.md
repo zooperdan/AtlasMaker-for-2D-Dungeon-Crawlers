@@ -13,8 +13,9 @@ If you run into any problems or have some questions or suggestions then find me 
 
 Download [AtlasMaker-for-2D-Dungeon-Crawlers.unitypackage](Package/AtlasMaker-for-2D-Dungeon-Crawlers.unitypackage) and import it into a Unity project.
 
-There is only one required package and it can be downloaded from the built-in package manager.
-> Package: Editor Coroutines (com.unity.editorcoroutines)
+There are two required packages and it can be downloaded from the built-in package manager.
+> Editor Coroutines
+> Post-Processing Stack v2
 
 ## Example project
 
@@ -34,6 +35,12 @@ Please note that the example is unoptimized and the dungeon rendering could like
 >	- Documentation on how to use this tool.
 
 ## Change log
+
+Version 0.9.3
+
+>	- Removed any Skybox in Lighting/Environment. Having a skybox there may sometimes create some pixel artifacts.
+>	- Fixed the fog so that it works in deferred rendering mode. Unfortunately this means that AtlasMaker now require the Unity Post-Processing Stack package.
+>	- You can now override dungeon depth and width per atlas layer.
 
 Version 0.9.2
 
