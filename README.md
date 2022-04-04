@@ -13,7 +13,7 @@ If you run into any problems or have some questions or suggestions then find me 
 
 Download [AtlasMaker-for-2D-Dungeon-Crawlers.unitypackage](Package/AtlasMaker-for-2D-Dungeon-Crawlers.unitypackage) and import it into a Unity project.
 
-There are two required packages and it can be downloaded from the built-in package manager.
+There are two required packages and they can be downloaded from the built-in package manager.
 >	- Editor Coroutines
 >	- Post-Processing Stack v2
 
