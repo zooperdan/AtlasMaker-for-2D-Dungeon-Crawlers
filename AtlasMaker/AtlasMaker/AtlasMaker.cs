@@ -1290,7 +1290,10 @@ namespace zooperdan.AtlasMaker
             for (int i = 0; i < _settings.atlases.Count; i++)
             {
                 GUILayout.BeginHorizontal();
-                _settings.atlases[i].enabled = EditorGUILayout.Toggle(_settings.atlases[i].enabled, GUILayout.Width(20));
+                if (_settings.atlases[i])
+                {
+                    _settings.atlases[i].enabled = EditorGUILayout.Toggle(_settings.atlases[i].enabled, GUILayout.Width(20));
+                }
                 _settings.atlases[i] = (Atlas)EditorGUILayout.ObjectField(_settings.atlases[i], typeof(Atlas), true);
                 if (GUILayout.Button("-", GUILayout.Width(24)))
                 {
