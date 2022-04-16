@@ -128,7 +128,7 @@ namespace zooperdan.AtlasMaker
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int mode;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int type;
+        public string type;
         [SerializeField]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<JSONTile> tiles = new List<JSONTile>();
@@ -985,7 +985,6 @@ namespace zooperdan.AtlasMaker
                     continue;
                 }
 
-
                 // override dungeondepth or width?
                 int dd = atlas.layers[layerIndex].dungeonDepth > 0 ? atlas.layers[layerIndex].dungeonDepth : _settings.dungeonDepth;
                 int dw = atlas.layers[layerIndex].dungeonWidth > 0 ? atlas.layers[layerIndex].dungeonWidth : _settings.dungeonWidth;
@@ -1100,7 +1099,6 @@ namespace zooperdan.AtlasMaker
                         switch (atlas.layers[layerIndex].type)
                         {
                             case AtlasLayerType.WALL:
-                            case AtlasLayerType.DECAL:
                                 {
                                     if (atlas.layers[layerIndex].renderMode == AtlasLayerRenderMode.ALL)
                                     {
@@ -1109,7 +1107,7 @@ namespace zooperdan.AtlasMaker
                                         {
                                             wallScript.ShowFrontWall();
                                         }
-                                        gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "front");
+                                        gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "wall-front");
                                         if (gri != null)
                                         {
                                             jsonLayer.tiles.Add(gri.tile);
@@ -1125,7 +1123,7 @@ namespace zooperdan.AtlasMaker
                                             {
                                                 wallScript.ShowFrontWall();
                                             }
-                                            gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "front");
+                                            gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "wall-front");
                                             if (gri != null)
                                             {
                                                 jsonLayer.tiles.Add(gri.tile);
@@ -1141,7 +1139,41 @@ namespace zooperdan.AtlasMaker
                                         {
                                             wallScript.ShowSideWall();
                                         }
-                                        gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "side");
+                                        gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "wall-side");
+                                        if (gri != null)
+                                        {
+                                            jsonLayer.tiles.Add(gri.tile);
+                                            generatedImages.Add(gri.image);
+                                        }
+                                    }
+                                }
+                                break;
+                            case AtlasLayerType.DECAL:
+                                {
+
+                                    if (vec.y <= 0)
+                                    {
+                                        // front
+                                        if (wallScript != null)
+                                        {
+                                            wallScript.ShowFrontWall();
+                                        }
+                                        gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "decal-front");
+                                        if (gri != null)
+                                        {
+                                            jsonLayer.tiles.Add(gri.tile);
+                                            generatedImages.Add(gri.image);
+                                        }
+                                    }
+
+                                    // side
+                                    if (vec.x >= 0)
+                                    {
+                                        if (wallScript != null)
+                                        {
+                                            wallScript.ShowSideWall();
+                                        }
+                                        gri = GetGeneratedImage(atlas.layers[layerIndex], layerIndex, vec, "decal-side");
                                         if (gri != null)
                                         {
                                             jsonLayer.tiles.Add(gri.tile);
@@ -1196,6 +1228,7 @@ namespace zooperdan.AtlasMaker
                 jsonLayer.id = layerIndex + 1;
                 jsonLayer.mode = (int)atlas.layers[layerIndex].renderMode;
                 jsonLayer.name = atlas.layers[layerIndex].id;
+                jsonLayer.type = atlas.layers[layerIndex].type.ToString().ToLower();
                 jsonResult.layers.Add(jsonLayer);
 
             }
@@ -1290,8 +1323,7 @@ namespace zooperdan.AtlasMaker
             for (int i = 0; i < _settings.atlases.Count; i++)
             {
                 GUILayout.BeginHorizontal();
-                if (_settings.atlases[i])
-                {
+                if (_settings.atlases[i]) {
                     _settings.atlases[i].enabled = EditorGUILayout.Toggle(_settings.atlases[i].enabled, GUILayout.Width(20));
                 }
                 _settings.atlases[i] = (Atlas)EditorGUILayout.ObjectField(_settings.atlases[i], typeof(Atlas), true);
