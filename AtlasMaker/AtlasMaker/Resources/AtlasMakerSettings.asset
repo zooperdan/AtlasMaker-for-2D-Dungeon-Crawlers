@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7524e9d4e9c309541bb0de176a181aa2, type: 3}
   m_Name: AtlasMakerSettings
   m_EditorClassIdentifier: 
-  filterMode: 1
+  filterMode: 0
   outputPath: e:\
   exportMode: 0
-  dungeonDepth: 4
+  dungeonDepth: 3
   dungeonWidth: 4
   screenSize:
-    width: 320
-    height: 200
+    width: 400
+    height: 240
   atlases:
   - {fileID: 11400000, guid: dde56e478a0c10c4cb9951ab798faa93, type: 2}
   fov: 35
@@ -28,7 +28,7 @@ MonoBehaviour:
   lensShiftY: -0.2
   lightMode: 1
   pointLightPosition: {x: 0, y: 0, z: 0}
-  pointLightRange: 5
+  pointLightRange: 6
   pointLightIntensity: 2.75
   pointLightColor: {r: 1, g: 1, b: 1, a: 1}
   pointLightShadows: 0
@@ -47,6 +47,6 @@ MonoBehaviour:
   ambientColor: {r: 0, g: 0, b: 0, a: 1}
   previewBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   previewFiltering: 1
-  paletteTexture: {fileID: 0}
-  ditherAtlas: 0
+  paletteTexture: {fileID: 2800000, guid: 2bad0bd7d6dd88f49902d7a72911b94e, type: 3}
+  ditherAtlas: 1
   ditherAmount: 1500
