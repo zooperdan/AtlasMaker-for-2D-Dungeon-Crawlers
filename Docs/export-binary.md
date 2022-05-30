@@ -12,7 +12,7 @@
 | Int16 | 1 | Screen height |
 | Byte | 1  | Layer count |
 
-> Repeating data from this point based on Layer count.
+> Repeating layer data from this point based on layer count byte value.
 
 ### Layers
 
@@ -20,18 +20,20 @@
 | :------------- |  :------------- |  :------------- |
 | Byte | 1 | Layer ID |
 | Byte | 1  | Layer Name Length |
-| Bytes | Depends on previous byte | Layer Name |
+| Bytes | Depends on previous byte value | Layer Name |
 | Byte | 1 | Render mode |
 | Byte | 1  | Layer Type Length |
-| Bytes | Depends on previous byte | Layer Type |
+| Bytes | Depends on previous byte value | Layer Type |
 | Byte | 1 | Tiles count |
 
 #### Tiles
 
+> Repeating tile data from this point based on tiles count byte value.
+> 
 | Type | Size | Description |
 | :------------- |  :------------- |  :------------- |
 | Byte | 1  | Tile Type Length |
-| Bytes | Depends on previous byte | Tile Type |
+| Bytes | Depends on previous byte value | Tile Type |
 | Byte | 1 | Map X |
 | Byte | 1  | Map Y |
 | Int16 | 1 | Screen X |
