@@ -40,9 +40,8 @@ Check it out here: [It Came from the Forest](https://zooperdan.itch.io/it-came-f
 >	- Implement two types of atlas packing.
 >		- Optimized (This is the current one that is already implemented).
 >		- Layed out. This method will arrange the atlas in a way so the side walls are connected to each other like they would be when rendered in a dungeon. This makes it easy to use this as a template for manual pixelling on top.
->	- Output the atlas data to other formats in addition to JSON (LUA, XML, CSV, BINARY etc.)
 >	- Option to write the image output to separate image files instead of a single atlas image.
->	- Documentation on how to use this tool.
+>	- (Better) Documentation on how to use this tool.
 
 ## Change log
 
