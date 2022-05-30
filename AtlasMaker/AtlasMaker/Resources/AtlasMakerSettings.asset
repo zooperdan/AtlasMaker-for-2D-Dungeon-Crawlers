@@ -16,15 +16,15 @@ MonoBehaviour:
   outputPath: e:\
   exportMode: 0
   dungeonDepth: 3
-  dungeonWidth: 4
+  dungeonWidth: 2
   screenSize:
-    width: 400
-    height: 240
+    width: 320
+    height: 200
   atlases:
   - {fileID: 11400000, guid: dde56e478a0c10c4cb9951ab798faa93, type: 2}
-  fov: 35
+  fov: 40
   offsetY: 0.6
-  offsetZ: 1
+  offsetZ: 0
   lensShiftY: -0.2
   lightMode: 1
   pointLightPosition: {x: 0, y: 0, z: 0}
