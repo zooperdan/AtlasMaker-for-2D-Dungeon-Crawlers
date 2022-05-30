@@ -17,3 +17,6 @@ MonoBehaviour:
   id: wall
   type: 0
   renderMode: 0
+  renderSide: 0
+  dungeonDepth: 0
+  dungeonWidth: 0

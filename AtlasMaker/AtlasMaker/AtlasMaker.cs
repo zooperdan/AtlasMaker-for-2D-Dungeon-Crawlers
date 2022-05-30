@@ -215,7 +215,7 @@ namespace zooperdan.AtlasMaker
         private AtlasMakerSettings _settings;
         GameObject atlasMakerCamera;
 
-        private const string VERSION_NUMBER = "0.9.3";
+        private const string VERSION_NUMBER = "0.9.4";
 
         private List<Vector2Int> _squaresToGenerateList = new List<Vector2Int>();
         private DataContainer _dataContainer = new DataContainer();
@@ -420,6 +420,11 @@ namespace zooperdan.AtlasMaker
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Output folder", GUILayout.Width(100));
                 _settings.outputPath = EditorGUILayout.TextField(_settings.outputPath);
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Export Mode", GUILayout.Width(100));
+                _settings.exportMode = (ExportMode)EditorGUILayout.EnumPopup(_settings.exportMode);
                 GUILayout.EndHorizontal();
 
                 EditorGUILayout.Space();
@@ -1275,10 +1280,35 @@ namespace zooperdan.AtlasMaker
                     }
                 }
 
-                string json = JsonConvert.SerializeObject(jsonResult);
-                
-                string jsonFilename = destPath + atlas.id + ".json";
-                System.IO.File.WriteAllText(jsonFilename, json);
+                switch(_settings.exportMode)
+                {
+                    case ExportMode.Binary:
+                        {
+                            Binary.Save(destPath + atlas.id + ".bin", jsonResult);
+                        }
+                        break;
+                    case ExportMode.LUATable:
+                        {
+                            LUATABLE.Save(atlas.id, destPath + atlas.id + ".lua", jsonResult);
+                        }
+                        break;
+                    case ExportMode.CSV:
+                        {
+                            CSV.Save(destPath + atlas.id + ".csv", jsonResult);
+                        }
+                        break;
+                    case ExportMode.XML:
+                        {
+                            XML.Save(destPath + atlas.id + ".xml", jsonResult);
+                        }
+                        break;
+                    default:
+                        {
+                            string json = JsonConvert.SerializeObject(jsonResult);
+                            string filename = destPath + atlas.id + ".json";
+                            System.IO.File.WriteAllText(filename, json);
+                        } break;
+                }
 
             }
 

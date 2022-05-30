@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47caac738fc671440bd0bbdff89756f7, type: 3}
   m_Name: sign
   m_EditorClassIdentifier: 
-  enabled: 1
+  enabled: 0
   model: {fileID: 6431865897727680575, guid: 06c8558a220711e4a867676a58a49e29, type: 3}
   id: sign
   type: 3
   renderMode: 0
   renderSide: 0
+  dungeonDepth: 0
+  dungeonWidth: 0

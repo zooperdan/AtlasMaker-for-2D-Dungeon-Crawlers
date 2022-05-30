@@ -15,6 +15,16 @@ namespace zooperdan.AtlasMaker
     }
 
     [Serializable]
+    public enum ExportMode
+    {
+        JSON = 0,
+        CSV = 1,
+        XML = 2,
+        Binary = 3,
+        LUATable = 4
+    }
+
+    [Serializable]
     public struct ScreenSize
     {
         public int width;
@@ -26,10 +36,9 @@ namespace zooperdan.AtlasMaker
     {
         public FilterMode filterMode = FilterMode.Point;
         public string outputPath = "";
+        public ExportMode exportMode = ExportMode.JSON;
         public int dungeonDepth = 5;
         public int dungeonWidth = 3;
-        //public Size screenSize = new Size();
-        [SerializeField]
         public ScreenSize screenSize = new ScreenSize { width = 320, height = 256 };
         public List<Atlas> atlases = new List<Atlas>();
 
