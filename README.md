@@ -46,6 +46,15 @@ Check it out here: [It Came from the Forest](https://zooperdan.itch.io/it-came-f
 
 ## Change log
 
+Version 0.9.4
+
+>	- Added four new export formats:
+>		- Comma separated values (CSV)
+>		- XML
+>		- [LUA Table](https://www.lua.org/pil/2.5.html)
+>		- [Binary](/Docs/export-binary.md)
+>	- Changed the default textures.
+
 Version 0.9.3
 
 >	- Removed any Skybox in Lighting/Environment. Having a skybox there may sometimes create some pixel artifacts.
